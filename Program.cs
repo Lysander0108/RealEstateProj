@@ -16,16 +16,18 @@ namespace RealEstateProj
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            builder.Services.AddDbContextFactory<AppDbContext>(options =>
+                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<PropertyService>();
             builder.Services.AddScoped<PropertyImageService>();
             builder.Services.AddScoped<UserService>();
 
+<<<<<<< HEAD
             builder.Services.AddTransient<UserService>();
           //  builder.Services.AddTransient<>
+=======
+>>>>>>> 1c2867a (updated UserService)
 
             var app = builder.Build();
 
@@ -50,4 +52,8 @@ namespace RealEstateProj
         }
     }
 }
+<<<<<<< HEAD
 //TODO learn forms
+=======
+
+>>>>>>> 1c2867a (updated UserService)

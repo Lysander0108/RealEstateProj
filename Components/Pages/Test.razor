@@ -1,9 +1,49 @@
+<<<<<<< HEAD
 ﻿@page "/"
 @using RealEstateProj.Data.Service
+=======
+﻿@page "/test"
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Service
+@using Microsoft.AspNetCore.Components.Forms
+>>>>>>> 1c2867a (updated UserService)
 @inject UserService UserService;
 
 <h3>Test</h3>
 
+<<<<<<< HEAD
 @code {
 
+=======
+<EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
+    <DataAnnotationsValidator />
+
+    <label for="UserNameInput">UserName</label>
+    <InputText id="UserNameInput" @bind-Value="user.UserName"></InputText>
+
+    <label for="Password">password</label>
+    <InputText  id="Password" type="password" @bind-Value="user.PasswordHashed"></InputText>
+
+    <label for="Role"></label>
+    <InputSelect id="Role" @bind-Value="user.Role">
+        @foreach (var role in Enum.GetValues<Role>())
+        {
+            <option value="@role">@role</option>
+        }
+    </InputSelect>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    User user = new User();
+
+    public void HandleSubmit(EditContext editContext)
+    {
+        var NewUser = (User)editContext.Model;
+        UserService.AddUser(NewUser);
+        user = new User();
+
+    }
+>>>>>>> 1c2867a (updated UserService)
 }

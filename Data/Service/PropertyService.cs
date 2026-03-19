@@ -9,5 +9,16 @@ namespace RealEstateProj.Data.Service
         {
             _dbContextFactory = dbContextFactory;
         }
+<<<<<<< HEAD
+=======
+
+        public void AddProperty(Property property)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            context.Properties.Add(property);
+            context.SaveChanges();
+
+        }
+>>>>>>> 1c2867a (updated UserService)
     }
 }
