@@ -24,6 +24,9 @@ namespace RealEstateProj
             builder.Services.AddScoped<PropertyImageService>();
             builder.Services.AddScoped<UserService>();
 
+            builder.Services.AddTransient<UserService>();
+          //  builder.Services.AddTransient<>
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -47,3 +50,4 @@ namespace RealEstateProj
         }
     }
 }
+//TODO learn forms

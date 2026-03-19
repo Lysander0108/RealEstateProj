@@ -2,6 +2,7 @@ namespace RealEstateProj.Data
 {
     public class Property
     {
+         
         public int ID { get; set; }
         public string Title { get; set; }
         public string City { get; set; }
