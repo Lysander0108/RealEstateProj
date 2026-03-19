@@ -10,7 +10,7 @@ using RealEstateProj.Data;
 namespace RealEstateProj.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260318192758_InitialCreate")]
+    [Migration("20260320230833_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace RealEstateProj.Migrations
 
             modelBuilder.Entity("RealEstateProj.Data.Property", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -34,7 +34,6 @@ namespace RealEstateProj.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Price")
@@ -46,14 +45,14 @@ namespace RealEstateProj.Migrations
                     b.Property<double>("Size")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Properties");
                 });
@@ -68,10 +67,12 @@ namespace RealEstateProj.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PropertyID")
+                    b.Property<int>("PropertyId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("PropertyImages");
                 });
@@ -96,6 +97,22 @@ namespace RealEstateProj.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("RealEstateProj.Data.PropertyImage", b =>
+                {
+                    b.HasOne("RealEstateProj.Data.Property", "property")
+                        .WithMany("Images")
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("property");
+                });
+
+            modelBuilder.Entity("RealEstateProj.Data.Property", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

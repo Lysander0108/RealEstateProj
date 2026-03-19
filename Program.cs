@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Components;
 using RealEstateProj.Data;
+using RealEstateProj.Data.Interfaces;
 using RealEstateProj.Data.Service;
 
 
@@ -16,16 +17,14 @@ namespace RealEstateProj
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContextFactory<AppDbContext>(options =>
+                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IPropertyService, PropertyService>();
+            builder.Services.AddScoped<IPropertyImageService, PropertyImageService>();
+            builder.Services.AddScoped<IUserService,UserService>();
 
 
-            builder.Services.AddScoped<PropertyService>();
-            builder.Services.AddScoped<PropertyImageService>();
-            builder.Services.AddScoped<UserService>();
-
-            builder.Services.AddTransient<UserService>();
-          //  builder.Services.AddTransient<>
 
             var app = builder.Build();
 
@@ -50,4 +49,4 @@ namespace RealEstateProj
         }
     }
 }
-//TODO learn forms
+
