@@ -8,7 +8,8 @@
         public void UpdateUserByName(User user, string newUsername);
         public void DeleteUserByName(string userName);
         public User GetUserByEmail(string email);
-
-
+        public User GetUserById(int id);
+        public void DeleteUserById(int id);
+        public IEnumerable<User> GetAllUsers();
     }
 }

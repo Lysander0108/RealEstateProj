@@ -42,8 +42,10 @@ namespace RealEstateProj.Data.Service
             return context.Properties.Where(x => x.Rooms == rooms).ToList();
         }
 
-      
-
-        
+        public IEnumerable<Property> GetAllProperties()
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            return context.Properties.ToList();
+        }
     }
 }

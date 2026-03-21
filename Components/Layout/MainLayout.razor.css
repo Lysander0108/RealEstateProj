@@ -1,3 +1,51 @@
+.top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+.burger-menu {
+    width: 32px;
+    height: 32px;
+    margin-right: 1rem;
+}
+
+nav .nav-link {
+    display: inline-block;
+    padding: 0 0.75rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    nav .nav-link:hover {
+        color: #007bff;
+        text-decoration: underline;
+    }
+
+.logo-placeholder {
+    font-weight: bold;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.main-content {
+    margin-top: 2rem;
+}
+
+
+
+
+
+
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;

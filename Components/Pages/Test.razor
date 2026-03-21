@@ -5,9 +5,7 @@
 @using RealEstateProj.Data.Service
 @inject IUserService UserService;
 
-<h3>Test</h3>
-
-
+<h3>Add user</h3>
 
 <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
     <DataAnnotationsValidator />
@@ -16,7 +14,7 @@
     <InputText id="UserNameInput" @bind-Value="user.UserName"></InputText>
 
     <label for="Password">password</label>
-    <InputText  id="Password" type="password" @bind-Value="user.PasswordHashed"></InputText>
+    <InputText id="Password" type="password" @bind-Value="user.PasswordHashed"></InputText>
 
     <label for="Role"></label>
     <InputSelect id="Role" @bind-Value="user.Role">
@@ -25,18 +23,85 @@
             <option value="@role">@role</option>
         }
     </InputSelect>
-    
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
+<h3>Delete user</h3>
+
+<select @onchange="SelectDel" class="form-floating">
+    <option value="">Select...</option>
+    <option value="Id">Id</option>
+    <option value="name">Name</option>
+</select>
+
+@if (beenClicked)
+{
+    @switch (DeleteOption)
+    {
+        case "Id":
+            <InputNumber @bind-Value="delId" />
+            break;
+
+        case "name":
+            <InputText @bind-Value="delData" />
+            break;
+
+        default:
+            break;
+    }
+
+    if (DeleteOption == "Id" && delId > 0 || DeleteOption == "name" && delData != "")
+    {
+        <button @onclick="HandleDelete">Delete user</button>
+    }
+}
+
+<span style="color:@messageColor">@message</span>
+
 @code {
     User user = new User();
+    string DeleteOption = "";
+    string delData = "";
+    int delId;
+    bool beenClicked = false;
+    string message = "";
+    string messageColor = "";
 
     public void HandleSubmit(EditContext editContext)
     {
         var NewUser = (User)editContext.Model;
         UserService.AddUser(NewUser);
         user = new User();
+    }
 
+    public void SelectDel(ChangeEventArgs e)
+    {
+        DeleteOption = e.Value?.ToString();
+        beenClicked = true;
+    }
+
+    public void HandleDelete()
+    {
+        try
+        {
+            switch (DeleteOption)
+            {
+                case "Id":
+                    UserService.DeleteUserById(delId);
+                    break;
+
+                case "name":
+                    UserService.DeleteUserByName(delData);
+                    break;
+            }
+            message = "User deleted successfully!";
+            messageColor = "green";
+        }
+        catch
+        {
+            message = "Problem deleting user.";
+            messageColor = "red";
+        }
     }
 }

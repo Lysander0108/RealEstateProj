@@ -1,6 +1,24 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<div class="top-row">
+    <div class="left-section">
+        <i class="fa-solid fa-bars" style="width: 30px"></i>
+        <nav>
+            <a class="nav-link" href="/">Home</a>
+            <a class="nav-link" href="/test">Test</a>
+            <a class="nav-link" href="/login">Login</a>
+            <a class="fa-brands fa-github text-dark" 
+               href="https://github.com/Lysander0108/RealEstateProj" style="30px" target="_blank" rel="noopener noreferrer"></a>
+        </nav>
+    </div>
+    <div class="logo-placeholder">
+        LOGO
+    </div>
+</div>
+
+<div class="container main-content">
+    @Body
+</div>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.

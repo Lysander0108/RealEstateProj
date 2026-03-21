@@ -11,12 +11,12 @@ namespace RealEstateProj.Data.Service
         public UserService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
+            
         }
 
         public void AddUser(User user)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            user.PasswordHashed = _passwordhasher.HashPassword(user, user.PasswordHashed);
             context.Users.Add(user);
             context.SaveChanges();
         }
@@ -28,6 +28,14 @@ namespace RealEstateProj.Data.Service
 
             context.Remove(user);
 
+        }
+
+        public void DeleteUserById(int id)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            var user = GetUserById(id);
+
+            context.Remove(user);
         }
 
         public void UpdateUserByName(User user, string newUsername)
@@ -61,6 +69,19 @@ namespace RealEstateProj.Data.Service
             using var context = _dbContextFactory.CreateDbContext();
             var user = context.Users.FirstOrDefault(x => x.Email == email);
             return user;
+        }
+
+        public User GetUserById(int id)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            var user = context.Users.FirstOrDefault(x => x.ID == id);
+            return user;
+        }
+
+        public IEnumerable<User> GetAllUsers()
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            return context.Users.ToList();
         }
     }
 }
