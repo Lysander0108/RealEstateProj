@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Data.Interfaces;
 
 namespace RealEstateProj.Data.Service
@@ -7,7 +6,6 @@ namespace RealEstateProj.Data.Service
     public class UserService : IUserService
     {
         private IDbContextFactory<AppDbContext> _dbContextFactory;
-        private PasswordHasher<User> _passwordhasher = new();
         public UserService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
@@ -16,7 +14,6 @@ namespace RealEstateProj.Data.Service
         public void AddUser(User user)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            user.PasswordHashed = _passwordhasher.HashPassword(user, user.PasswordHashed);
             context.Users.Add(user);
             context.SaveChanges();
         }
