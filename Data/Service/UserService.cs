@@ -83,6 +83,23 @@ namespace RealEstateProj.Data.Service
             using var context = _dbContextFactory.CreateDbContext();
             return context.Users.ToList();
         }
+
+        public void UpdateUserName(int id, string newUsername)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            var user = context.Users.Find(id) ?? throw new Exception("no user found hehheehhe");
+            user.UserName = newUsername;
+            context.SaveChanges();
+        }
+
+        public void UpdateUserEmail(int id, string newEmail)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            var user = context.Users.Find(id) ?? throw new Exception("no user found hehheehhe");
+            user.UserName = newEmail;
+            context.SaveChanges();
+        }
     }
-}
+ }
+
 
