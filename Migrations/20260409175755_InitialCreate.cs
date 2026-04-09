@@ -36,7 +36,8 @@ namespace RealEstateProj.Migrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 25, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
                     PasswordHashed = table.Column<string>(type: "TEXT", nullable: false),
                     Role = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -49,14 +50,15 @@ namespace RealEstateProj.Migrations
                 name: "PropertyImages",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Image = table.Column<string>(type: "TEXT", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "BLOB", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
                     PropertyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyImages", x => x.ID);
+                    table.PrimaryKey("PK_PropertyImages", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PropertyImages_Properties_PropertyId",
                         column: x => x.PropertyId,

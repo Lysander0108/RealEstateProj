@@ -10,7 +10,7 @@ using RealEstateProj.Data;
 namespace RealEstateProj.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260320230833_InitialCreate")]
+    [Migration("20260409175755_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,18 +59,22 @@ namespace RealEstateProj.Migrations
 
             modelBuilder.Entity("RealEstateProj.Data.PropertyImage", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Image")
+                    b.Property<byte[]>("ImageData")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("BLOB");
 
                     b.Property<int>("PropertyId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
 
@@ -83,6 +87,10 @@ namespace RealEstateProj.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PasswordHashed")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -92,6 +100,7 @@ namespace RealEstateProj.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
+                        .HasMaxLength(25)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");

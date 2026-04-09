@@ -9,14 +9,18 @@
 
 <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
     <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <label for="UserNameInput">UserName</label>
     <InputText id="UserNameInput" @bind-Value="user.UserName"></InputText>
 
-    <label for="Password">password</label>
+    <label for="Email">Email</label>
+    <InputText id="Email" @bind-Value="user.Email"></InputText>
+
+    <label for="Password">Password</label>
     <InputText id="Password" type="password" @bind-Value="user.PasswordHashed"></InputText>
 
-    <label for="Role"></label>
+    <label for="Role">Role</label>
     <InputSelect id="Role" @bind-Value="user.Role">
         @foreach (var role in Enum.GetValues<Role>())
         {
@@ -61,6 +65,7 @@
 
 @code {
     User user = new User();
+
     string DeleteOption = "";
     string delData = "";
     int delId;
@@ -70,6 +75,7 @@
 
     public void HandleSubmit(EditContext editContext)
     {
+
         var NewUser = (User)editContext.Model;
         UserService.AddUser(NewUser);
         user = new User();
