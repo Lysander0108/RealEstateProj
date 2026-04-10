@@ -5,6 +5,21 @@
 @using RealEstateProj.Data.Service
 @inject IUserService UserService;
 
+
+<h3>Get all users</h3>
+<button @onclick="GetAllUsers">Show All Users</button>
+<br/>
+@if(allUsers != null)
+{
+    foreach(var user in allUsers)
+    {
+        <text>Name: @user.UserName, Email: @user.Email <br/> </text>
+    }
+}
+
+
+@*TODO add placeholders *@
+
 <h3>Add user</h3>
 
 <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
@@ -12,7 +27,7 @@
     <ValidationSummary />
 
     <label for="UserNameInput">UserName</label>
-    <InputText id="UserNameInput" @bind-Value="user.UserName"></InputText>
+    <InputText id="UserNameInput" @bind-Value="user.UserName" ></InputText>
 
     <label for="Email">Email</label>
     <InputText id="Email" @bind-Value="user.Email"></InputText>
@@ -33,13 +48,13 @@
 
 <h3>Delete user</h3>
 
-<select @onchange="SelectDel" class="form-floating">
+<select @bind="DeleteOption" class="form-floating">
     <option value="">Select...</option>
     <option value="Id">Id</option>
     <option value="name">Name</option>
 </select>
 
-@if (beenClicked)
+@if (DeleteOption != "")
 {
     @switch (DeleteOption)
     {
@@ -60,11 +75,49 @@
         <button @onclick="HandleDelete">Delete user</button>
     }
 }
+<h3>Update</h3>
+
+<span>Choose id of the user u wanna change</span>
+<InputNumber @bind-Value="idToChange" placeHolder="enter id"/>
+
+@if (idToChange != null)
+{
+    <select @bind="updateOption" class="form-floating">
+        <option value="email">email</option>
+        <option value="name">user name</option>
+    </select>
+}
+
+@switch(updateOption)
+{
+    case "email": 
+   <InputText @bind-Value="updateValue" />
+        break;
+
+        case "name":
+        <InputText  @bind-Value="updateValue" />
+        break;
+
+        default:
+        break;
+
+}
+
+@if(updateValue != "")
+{
+    <button @onclick="HandleUpdate">update user</button>
+}
+
 
 <span style="color:@messageColor">@message</span>
 
 @code {
     User user = new User();
+    List<User>? allUsers = null;
+
+    string updateOption = "";
+    int? idToChange = null;
+    string updateValue ="" ;
 
     string DeleteOption = "";
     string delData = "";
@@ -73,18 +126,22 @@
     string message = "";
     string messageColor = "";
 
+    public void HandleUpdate()
+    {
+        if(idToChange != null){
+        if (updateOption == "name" )
+            UserService.UpdateUserName(idToChange.Value, updateValue);
+        if (updateOption == "email")
+            UserService.UpdateUserEmail(idToChange.Value, updateValue);
+        }
+    }
+
     public void HandleSubmit(EditContext editContext)
     {
 
         var NewUser = (User)editContext.Model;
         UserService.AddUser(NewUser);
         user = new User();
-    }
-
-    public void SelectDel(ChangeEventArgs e)
-    {
-        DeleteOption = e.Value?.ToString();
-        beenClicked = true;
     }
 
     public void HandleDelete()
@@ -109,5 +166,10 @@
             message = "Problem deleting user.";
             messageColor = "red";
         }
+    }
+
+    public void GetAllUsers()
+    {
+        allUsers = UserService.GetAllUsers();
     }
 }

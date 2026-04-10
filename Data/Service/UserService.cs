@@ -17,25 +17,29 @@ namespace RealEstateProj.Data.Service
         public void AddUser(User user)
         {
             using var context = _dbContextFactory.CreateDbContext();
+            user.PasswordHashed = _passwordhasher.HashPassword(user, user.PasswordHashed);
             context.Users.Add(user);
             context.SaveChanges();
         }
 
         public void DeleteUserByName(string userName)
         {
-            var user = GetUserByUserName(userName) ?? throw new Exception("No user found");
+          
             using var context = _dbContextFactory.CreateDbContext();
+            var user = context.Users.FirstOrDefault() ?? throw new Exception("No user found");
 
             context.Remove(user);
+            context.SaveChanges();
 
         }
 
         public void DeleteUserById(int id)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            var user = GetUserById(id);
+            var user = context.Users.FirstOrDefault() ?? throw new Exception("No user found"); ;
 
             context.Remove(user);
+            context.SaveChanges();
         }
 
         public void UpdateUserByName(User user, string newUsername)
@@ -78,7 +82,7 @@ namespace RealEstateProj.Data.Service
             return user;
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public List<User> GetAllUsers()
         {
             using var context = _dbContextFactory.CreateDbContext();
             return context.Users.ToList();

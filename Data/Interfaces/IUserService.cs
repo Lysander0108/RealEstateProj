@@ -10,8 +10,7 @@
         public User GetUserByEmail(string email);
         public User GetUserById(int id);
         public void DeleteUserById(int id);
-        public IEnumerable<User> GetAllUsers();
-       
+        public List<User> GetAllUsers();
         public void UpdateUserName(int id, string newUsername);
         public void UpdateUserEmail(int id, string newEmail);
     }
