@@ -5,11 +5,20 @@
     padding: 0.5rem 1rem;
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
+    height: 2.8rem;
 }
 
 .left-section {
     display: flex;
     align-items: center;
+    height: 100%;
+}
+
+.right-section{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    
 }
 
 .burger-menu {
@@ -31,11 +40,23 @@ nav .nav-link {
         text-decoration: underline;
     }
 
-.logo-placeholder {
-    font-weight: bold;
-    font-size: 1.5rem;
-    letter-spacing: 2px;
+.top-rowText {
+    margin-left: 20px;
+    margin-right: 20px;
 }
+
+    .top-rowText-logo {
+        font-weight: bold;
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        
+    }
+
+    .top-rowText.phoneNumber {
+        font-family:Arial;
+        height: 20%;
+
+    }
 
 .main-content {
     margin-top: 2rem;

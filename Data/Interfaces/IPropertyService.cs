@@ -6,6 +6,6 @@
         public void RemovePropertyById(int id);
         public List<Property> GetPropertysListByRooms(int rooms);
         public Property GetPropertyById(int id);
-        IEnumerable<Property> GetAllProperties();
+        List<Property> GetAllProperties();
     }
 }

@@ -33,8 +33,8 @@ namespace RealEstateProj.Data.Service
         {
             using var context = _dbContextFactory.CreateDbContext();
             var property = context.Properties.FirstOrDefault(x  => x.Id == id);
-            return property;
-        }
+            return property;        
+                }
 
         public List<Property> GetPropertysListByRooms(int rooms)
         {
@@ -42,7 +42,7 @@ namespace RealEstateProj.Data.Service
             return context.Properties.Where(x => x.Rooms == rooms).ToList();
         }
 
-        public IEnumerable<Property> GetAllProperties()
+        public List<Property> GetAllProperties()
         {
             using var context = _dbContextFactory.CreateDbContext();
             return context.Properties.ToList();
