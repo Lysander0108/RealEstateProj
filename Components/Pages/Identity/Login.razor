@@ -1,0 +1,75 @@
+﻿@page "/login"
+
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Interfaces
+@using RealEstateProj.Data.Service
+
+@inject IUserService UserService
+@inject NavigationManager Navigation
+
+
+<div class="login-page">
+    <div class="login-card">
+        <h2 class="login-title">Create Account</h2>
+
+        <div class="login-form">
+            <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="input-group">
+                    <InputText @bind-Value="user.UserName" placeholder="Username" />
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <InputText @bind-Value="user.Email" placeholder="Email" />
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <InputText @bind-Value="user.PasswordHashed" type="password" placeholder="Password" />
+                    <i class="fa fa-lock"></i>
+                </div>
+
+                <button type="submit" class="login-btn">Sign Up</button>
+            </EditForm>
+        </div>
+
+        @if (massage != "")
+        {
+            <div class="login-message @(color == "green" ? "success" : "error")">
+                @massage
+            </div>
+        }
+
+        <div class="login-footer">
+            <span>Already have an account?</span>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/singin")'>Sign In</button>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    User user = new User();
+    string massage = "";
+    string color = "";
+
+
+    public void HandleSubmit(EditContext editContext)
+    {
+        var newUser = (User)editContext.Model;
+        if (UserService.CheckIfUserExists(newUser))
+        {
+            massage = "user already exists!";
+            color = "red";
+            return;
+        }
+
+        UserService.AddUser(newUser);
+        massage = "user added succsesfully!";
+        color = "green";
+
+        user = new User();
+    }
+}

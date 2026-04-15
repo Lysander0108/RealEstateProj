@@ -13,5 +13,7 @@
         public List<User> GetAllUsers();
         public void UpdateUserName(int id, string newUsername);
         public void UpdateUserEmail(int id, string newEmail);
+        public string HashPassword(string password);
+        public bool CheckIfUserExists(User user);
     }
 }

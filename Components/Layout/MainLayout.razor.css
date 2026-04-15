@@ -2,23 +2,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    padding: 0 1.5rem;
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
-    height: 2.8rem;
+    height: 3.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .left-section {
     display: flex;
     align-items: center;
-    height: 100%;
+    gap: 0.25rem;
 }
 
-.right-section{
+.right-section {
     display: flex;
     align-items: center;
-    height: 100%;
-    
+    gap: 1.5rem;
 }
 
 .burger-menu {
@@ -27,45 +30,50 @@
     margin-right: 1rem;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+}
+
 nav .nav-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     padding: 0 0.75rem;
     color: #333;
     text-decoration: none;
     font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    height: 100%;
 }
 
-    nav .nav-link:hover {
-        color: #007bff;
-        text-decoration: underline;
-    }
-
-.top-rowText {
-    margin-left: 20px;
-    margin-right: 20px;
+nav .nav-link:hover {
+    color: #007bff;
+    text-decoration: underline;
 }
 
-    .top-rowText-logo {
-        font-weight: bold;
-        font-size: 1.3rem;
-        letter-spacing: 2px;
-        
-    }
+.top-rowText.phoneNumber {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 1px;
+}
 
-    .top-rowText.phoneNumber {
-        font-family:Arial;
-        height: 20%;
-
-    }
+.top-rowText-logo {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: #222;
+    text-transform: uppercase;
+}
 
 .main-content {
-    margin-top: 2rem;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
 }
-
-
-
-
-
 
 #blazor-error-ui {
     color-scheme: light only;
@@ -81,9 +89,9 @@ nav .nav-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}

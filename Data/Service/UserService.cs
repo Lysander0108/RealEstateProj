@@ -26,7 +26,7 @@ namespace RealEstateProj.Data.Service
         {
           
             using var context = _dbContextFactory.CreateDbContext();
-            var user = context.Users.FirstOrDefault() ?? throw new Exception("No user found");
+            var user = context.Users.FirstOrDefault(u => u.UserName == userName) ?? throw new Exception("No user found");
 
             context.Remove(user);
             context.SaveChanges();
@@ -36,7 +36,7 @@ namespace RealEstateProj.Data.Service
         public void DeleteUserById(int id)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            var user = context.Users.FirstOrDefault() ?? throw new Exception("No user found"); ;
+            var user = context.Users.FirstOrDefault(u => u.ID == id) ?? throw new Exception("No user found"); ;
 
             context.Remove(user);
             context.SaveChanges();
@@ -54,6 +54,7 @@ namespace RealEstateProj.Data.Service
 
         }
 
+        
         public bool VerifyPassword(User user, string password)
         {
             var result = _passwordhasher.VerifyHashedPassword(user, user.PasswordHashed ,password);
@@ -102,6 +103,17 @@ namespace RealEstateProj.Data.Service
             var user = context.Users.Find(id) ?? throw new Exception("no user found hehheehhe");
             user.UserName = newEmail;
             context.SaveChanges();
+        }
+
+        public string HashPassword(string password)
+        {
+            return _passwordhasher.HashPassword(null!, password);
+        }
+
+        public bool CheckIfUserExists(User user)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            return context.Users.Any(u => u.UserName == user.UserName || u.Email == user.Email);
         }
     }
  }

@@ -16,6 +16,7 @@ namespace RealEstateProj
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+        
 
             builder.Services.AddDbContextFactory<AppDbContext>(options =>
                  options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -1,7 +1,12 @@
 ﻿@inject NavigationManager navigationManager
 
+@if (isOpen)
+{
+    <div class="sidebar-overlay" @onclick="ToggleSideBar"></div>
+}
+
 <div class="SideBar @(isOpen ? "open" : "close")">
-    <button class="close-X" @onclick="ToggleSideBar">X</button>
+    
     <div class="SideBar-options">
         <button @onclick='() => NavigateAndClose("/")'>Home</button>
         <button @onclick='() => NavigateAndClose("/AllProperties")'>All properties</button>
@@ -16,7 +21,7 @@
 
     async Task NavigateAndClose(string url)
     {
-        await ToggleSideBar.InvokeAsync(); // Close sidebar first
+        await ToggleSideBar.InvokeAsync();
         navigationManager.NavigateTo(url);
     }
 }

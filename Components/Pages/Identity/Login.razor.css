@@ -1,0 +1,243 @@
+﻿/* ===== Page background ===== */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin: -1.5rem;
+    padding: 1rem;
+}
+
+/* ===== Card ===== */
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Title ===== */
+.login-title {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #222;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== Form layout ===== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ===== Input groups ===== */
+.input-group {
+    position: relative;
+    margin-bottom: 0.75rem;
+    animation: slideIn 0.4s ease-out both;
+}
+
+    .input-group:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+
+    .input-group:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .input-group:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.input-group ::deep input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fafafa;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-sizing: border-box;
+    outline: none;
+}
+
+    .input-group ::deep input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        background: #fff;
+    }
+
+    .input-group ::deep input::placeholder {
+        color: #aaa;
+    }
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 0.85rem;
+    transform: translateY(-50%);
+    color: #bbb;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    pointer-events: none;
+}
+
+.input-group:focus-within i {
+    color: #007bff;
+}
+
+/* ===== Submit button ===== */
+.login-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    margin-top: 0.5rem;
+ 
+}
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    }
+
+    .login-btn:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+/* ===== Message feedback ===== */
+.login-message {
+    text-align: center;
+    padding: 0.6rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.login-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.login-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* ===== Validation ===== */
+.login-form ::deep .validation-summary-errors {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ===== Footer / switch link ===== */
+.login-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+    animation: fadeIn 0.5s ease-out 0.7s both;
+}
+
+.switch-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    margin-left: 0.25rem;
+    transition: color 0.2s ease;
+}
+
+    .switch-btn:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+/* ===== Phone ===== */
+@media (max-width: 480px) {
+    .login-card {
+        margin: 1rem;
+        padding: 2rem 1.25rem;
+    }
+
+    .login-title {
+        font-size: 1.3rem;
+    }
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 481px) and (max-width: 768px) {
+    .login-card {
+        max-width: 360px;
+    }
+}

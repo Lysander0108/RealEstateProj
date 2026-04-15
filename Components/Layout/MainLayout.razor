@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<SideBar isOpen ="@toggleSideBar" ToggleSideBar="@ToggleSideBar" />
+<SideBar isOpen="@toggleSideBar" ToggleSideBar="@ToggleSideBar" />
 
 <div class="top-row">
     <div class="left-section">
@@ -9,22 +9,22 @@
             <a class="nav-link" href="/">Home</a>
             <a class="nav-link" href="/test">Test</a>
             <a class="nav-link" href="/login">Login</a>
-            <a class="fa-brands fa-github text-dark" 
+            <a class="fa-brands fa-github text-dark"
                href="https://github.com/Lysander0108/RealEstateProj" style="30px" target="_blank" rel="noopener noreferrer"></a>
         </nav>
     </div>
  
     <div class="right-section">
-    <div class="top-rowText phoneNumber">
-        055-555-5555
+        <div class="top-rowText phoneNumber">
+            055-555-5555
+        </div>
+        <div class="top-rowText-logo">
+            LOGO
+        </div>
     </div>
-    <div class="top-rowText-logo">
-        LOGO
-    </div>
-</div>
 </div>
 
-<div class="container main-content">
+<div class="main-content">
     @Body
 </div>
 
@@ -34,7 +34,7 @@
     <span class="dismiss">🗙</span>
 </div>
 
-                @code{
-  bool toggleSideBar;
-  void ToggleSideBar() => toggleSideBar = !toggleSideBar;
+@code {
+    bool toggleSideBar;
+    void ToggleSideBar() => toggleSideBar = !toggleSideBar;
 }
