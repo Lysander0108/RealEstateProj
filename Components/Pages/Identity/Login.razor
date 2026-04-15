@@ -7,10 +7,11 @@
 @inject IUserService UserService
 @inject NavigationManager Navigation
 
+<PageTitle>Login</PageTitle>
 
 <div class="login-page">
     <div class="login-card">
-        <h2 class="login-title">Create Account</h2>
+        <h2 class="login-title">Create a new account</h2>
 
         <div class="login-form">
             <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
@@ -30,7 +31,7 @@
                     <i class="fa fa-lock"></i>
                 </div>
 
-                <button type="submit" class="login-btn">Sign Up</button>
+                <button type="submit" class="login-btn">Create</button>
             </EditForm>
         </div>
 
@@ -43,7 +44,7 @@
 
         <div class="login-footer">
             <span>Already have an account?</span>
-            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/singin")'>Sign In</button>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/signin")'>Sign In</button>
         </div>
     </div>
 </div>

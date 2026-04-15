@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Components;
+using RealEstateProj.Components.Pages.Identity;
 using RealEstateProj.Data;
 using RealEstateProj.Data.Interfaces;
 using RealEstateProj.Data.Service;
@@ -24,6 +25,7 @@ namespace RealEstateProj
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<IPropertyImageService, PropertyImageService>();
             builder.Services.AddScoped<IUserService,UserService>();
+            builder.Services.AddScoped<AuthService>();
 
 
 

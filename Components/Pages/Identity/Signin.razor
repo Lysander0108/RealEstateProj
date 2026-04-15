@@ -1,0 +1,33 @@
+﻿@page "/signin"
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Service
+@using RealEstateProj.Data.Interfaces
+@using RealEstateProj.Components.Pages
+
+
+@inject IUserService UserService
+
+
+<EditForm Model="user" @onValidSubmit="HandleSubmit" >
+    <DataAnnotationsValidator/>
+    <ValidationSummary />
+
+    <InputText @bind-Value="user.UserName" placeholder="Enter userName"></InputText>
+    <InputText @bind-Value="user.PasswordHashed" placeholder="Enter Password" type="password"></InputText>
+   
+</EditForm>
+
+@code {
+    User user = new User();
+    string massage = "";
+    string color = "";
+
+    3   
+    public void HandleSubmit(EditContext editContext)
+    {
+        user = (User)editContext.Model;
+        UserService.CheckIfUserExists(user);
+
+    }
+
+}
