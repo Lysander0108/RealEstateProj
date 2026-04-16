@@ -1,6 +1,12 @@
 ﻿@inherits LayoutComponentBase
+ @using RealEstateProj.Components.Pages.Identity
+ @inject AuthService authservice
+ @inject NavigationManager navigationManager
 
 <SideBar isOpen="@toggleSideBar" ToggleSideBar="@ToggleSideBar" />
+
+
+
 
 <div class="top-row">
     <div class="left-section">
@@ -8,7 +14,6 @@
         <nav>
             <a class="nav-link" href="/">Home</a>
             <a class="nav-link" href="/test">Test</a>
-            <a class="nav-link" href="/login">Login</a>
             <a class="fa-brands fa-github text-dark"
                href="https://github.com/Lysander0108/RealEstateProj" style="30px" target="_blank" rel="noopener noreferrer"></a>
         </nav>
@@ -37,4 +42,17 @@
 @code {
     bool toggleSideBar;
     void ToggleSideBar() => toggleSideBar = !toggleSideBar;
+
+    string uri = "";
+
+    protected override void OnInitialized()
+    {
+        var uri = navigationManager.Uri.ToLower();
+
+        if (uri.Contains("/signin") || uri.Contains("/login"))
+            return;
+
+        if (!authservice.IsLogged())
+            navigationManager.NavigateTo("/signin");
+    }
 }

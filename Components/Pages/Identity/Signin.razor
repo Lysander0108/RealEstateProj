@@ -47,10 +47,10 @@
     {
         message = "";
 
-        // Look up by email (unique), not username (can have duplicates)
+       
         var user = UserService.GetUserByEmail(email);
 
-        if (user is null || !UserService.VerifyPassword(user, password))
+        if (user == null || !UserService.VerifyPassword(user, password))
         {
             message = "Invalid email or password.";
             return;
