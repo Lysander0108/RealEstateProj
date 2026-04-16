@@ -11,7 +11,7 @@ namespace RealEstateProj.Data.Service
         public UserService(IDbContextFactory<AppDbContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
-            
+
         }
 
         public void AddUser(User user)
@@ -24,7 +24,7 @@ namespace RealEstateProj.Data.Service
 
         public void DeleteUserByName(string userName)
         {
-          
+
             using var context = _dbContextFactory.CreateDbContext();
             var user = context.Users.FirstOrDefault(u => u.UserName == userName) ?? throw new Exception("No user found");
 
@@ -54,10 +54,10 @@ namespace RealEstateProj.Data.Service
 
         }
 
-        
+
         public bool VerifyPassword(User user, string password)
         {
-            var result = _passwordhasher.VerifyHashedPassword(user, user.PasswordHashed ,password);
+            var result = _passwordhasher.VerifyHashedPassword(user, user.PasswordHashed, password);
             return result == PasswordVerificationResult.Success;
         }
 
@@ -109,13 +109,13 @@ namespace RealEstateProj.Data.Service
         {
             return _passwordhasher.HashPassword(null!, password);
         }
-
         public bool CheckIfUserExists(User user)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            return context.Users.Any(u => u.UserName == user.UserName || u.Email == user.Email);
+            return context.Users.Any(u => u.Email == user.Email);
         }
     }
- }
+
+}
 
 

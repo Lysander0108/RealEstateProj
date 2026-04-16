@@ -1,33 +1,62 @@
 ﻿@page "/signin"
 @using RealEstateProj.Data
-@using RealEstateProj.Data.Service
 @using RealEstateProj.Data.Interfaces
-@using RealEstateProj.Components.Pages
-
+@using RealEstateProj.Components.Pages.Identity
 
 @inject IUserService UserService
+@inject AuthService AuthService
+@inject NavigationManager Navigation
 
+<PageTitle>Sign In</PageTitle>
 
-<EditForm Model="user" @onValidSubmit="HandleSubmit" >
-    <DataAnnotationsValidator/>
-    <ValidationSummary />
+<div class="login-page">
+    <div class="login-card">
+        <h2 class="login-title">Sign In</h2>
 
-    <InputText @bind-Value="user.UserName" placeholder="Enter userName"></InputText>
-    <InputText @bind-Value="user.PasswordHashed" placeholder="Enter Password" type="password"></InputText>
-   
-</EditForm>
+        <div class="login-form">
+            <div class="input-group">
+                <input type="email" @bind="email" placeholder="Email" />
+                <i class="fa fa-envelope"></i>
+            </div>
+            <div class="input-group">
+                <input type="password" @bind="password" placeholder="Password" />
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <button class="login-btn" @onclick="HandleSignIn">Sign In</button>
+        </div>
+
+        @if (message != "")
+        {
+            <div class="login-message error">@message</div>
+        }
+
+        <div class="login-footer">
+            <span>Don't have an account?</span>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/login")'>Register</button>
+        </div>
+    </div>
+</div>
 
 @code {
-    User user = new User();
-    string massage = "";
-    string color = "";
+    private string email = "";
+    private string password = "";
+    private string message = "";
 
-    3   
-    public void HandleSubmit(EditContext editContext)
+    private void HandleSignIn()
     {
-        user = (User)editContext.Model;
-        UserService.CheckIfUserExists(user);
+        message = "";
 
+        // Look up by email (unique), not username (can have duplicates)
+        var user = UserService.GetUserByEmail(email);
+
+        if (user is null || !UserService.VerifyPassword(user, password))
+        {
+            message = "Invalid email or password.";
+            return;
+        }
+
+        AuthService.Sighin(user);
+        Navigation.NavigateTo("/");
     }
-
 }
