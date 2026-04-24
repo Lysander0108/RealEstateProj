@@ -1,0 +1,135 @@
+﻿@page "/property/{PropertyId:int}"
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Interfaces
+@inject IPropertyService PropertyService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+<PageTitle>@(property?.Title ?? "Property Details")</PageTitle>
+
+<!-- Toast Popup -->
+@if (copied)
+{
+    <div class="toast-popup">
+        <i class="fa-solid fa-link"></i> Link copied to clipboard!
+    </div>
+}
+
+<div class="exp-page">
+    @if (property != null)
+    {
+        <div class="exp-carousel">
+            @if (property.Images != null && property.Images.Count > 0)
+            {
+                var img = property.Images[currentImageIndex];
+                var src = $"data:{img.Type};base64,{Convert.ToBase64String(img.ImageData)}";
+                <img src="@src" alt="@property.Title" class="exp-img" />
+            }
+            else
+            {
+                <div class="exp-no-image"><i class="fa-solid fa-image"></i></div>
+            }
+
+            <button class="exp-arrow left" @onclick="Prev">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button class="exp-arrow right" @onclick="Next">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            @if (property.Images != null && property.Images.Count > 1)
+            {
+                <div class="exp-counter">
+                    @(currentImageIndex + 1) / @property.Images.Count
+                </div>
+            }
+        </div>
+
+        <div class="exp-info-row">
+
+            <!-- Left: breadcrumb + title + status + location -->
+            <div class="exp-right">
+                <div class="exp-breadcrumb">
+                    <span @onclick='() => Navigation.NavigateTo("/")'><i class="fa-solid fa-house"></i></span>
+                    <i class="fa-solid fa-chevron-left crumb-sep"></i>
+                    <span>@property.Status</span>
+                    <i class="fa-solid fa-chevron-left crumb-sep"></i>
+                    <span>@property.City</span>
+                    <i class="fa-solid fa-chevron-left crumb-sep"></i>
+                    <span class="crumb-active">@property.Title</span>
+                </div>
+                <h1 class="exp-title">@property.Title</h1>
+                @if (property.Status != null)
+                {
+                    <span class="exp-badge">@property.Status</span>
+                }
+                <p class="exp-location">
+                    <i class="fa-solid fa-location-dot"></i> @property.Address, @property.City
+                </p>
+            </div>
+
+            <!-- Right: actions + price -->
+            <div class="exp-left">
+                <div class="exp-actions">
+                    <button class="icon-btn" title="Back" @onclick='() => Navigation.NavigateTo("/")'>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <button class="icon-btn" title="Copy link" @onclick="CopyLink">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </button>
+                </div>
+                <div class="exp-price">₪@property.Price.ToString("N0")</div>
+            </div>
+
+        </div>
+
+        <div class="exp-details">
+            <div class="exp-stat-row">
+                <div class="exp-stat">
+                    <i class="fa-solid fa-bed"></i>
+                    <span>@property.Rooms חדרים</span>
+                </div>
+                <div class="exp-stat">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                    <span>@property.Size מ"ר</span>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(property.Description))
+            {
+                <div class="exp-description">
+                    <h3>תיאור הנכס</h3>
+                    <p>@property.Description</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="exp-not-found">Property not found.</p>
+    }
+</div>
+
+@code {
+    [Parameter] public int PropertyId { get; set; }
+    Property? property;
+    int currentImageIndex = 0;
+    bool copied = false;
+
+    protected override void OnInitialized()
+    {
+        property = PropertyService.GetPropertyById(PropertyId);
+    }
+
+    void Next() => currentImageIndex = (currentImageIndex + 1) % (property?.Images?.Count ?? 1);
+    void Prev() => currentImageIndex = (currentImageIndex - 1 + (property?.Images?.Count ?? 1)) % (property?.Images?.Count ?? 1);
+
+    async Task CopyLink()
+    {
+        var url = Navigation.Uri;
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", url);
+        copied = true;
+        await Task.Delay(2500);
+        copied = false;
+    }
+}

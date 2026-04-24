@@ -1,0 +1,211 @@
+﻿/* ===== Wrapper ===== */
+.card-wrapper {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== Card ===== */
+.property-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(30, 30, 30, 0.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(165, 122, 3, 0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+   
+}
+
+.card-wrapper:hover .property-card {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 32px rgba(218, 171, 45, 0.15);
+}
+
+/* ===== Image ===== */
+.property-image {
+    width: 100%;
+    height: 60%;
+    position: relative;
+    background: #020B13;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+    .property-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .property-image .no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #A57A03;
+        font-size: 2.5rem;
+    }
+
+/* ===== Badges ===== */
+.badge-status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #DAAB2D;
+    color: #020B13;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-price {
+    position: absolute;
+    bottom: 36px;
+    right: 12px;
+    background: rgba(2, 11, 19, 0.85);
+    color: #DAAB2D;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(218, 171, 45, 0.3);
+}
+
+/* ===== Carousel Arrows ===== */
+.img-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(2, 11, 19, 0.7);
+    border: 1px solid rgba(218, 171, 45, 0.25);
+    color: #DAAB2D;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.2s ease;
+    z-index: 5;
+}
+
+    .img-arrow:hover {
+        background: rgba(218, 171, 45, 0.2);
+    }
+
+    .img-arrow.left { left: 10px; }
+    .img-arrow.right { right: 10px; }
+
+/* ===== Dots ===== */
+.img-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 5;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    border: none;
+}
+
+    .dot.active {
+        background: #DAAB2D;
+        transform: scale(1.3);
+    }
+
+/* ===== Body ===== */
+.property-body {
+    padding: 0.85rem 1rem 1.25rem 2rem; 
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+/* ===== Title ===== */
+.property-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #DAAB2D;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===== Location ===== */
+.property-location {
+    font-size: 0.95rem;
+    color: #DAAB2D;
+    margin: 0;
+    font-weight: 400;
+}
+
+    .property-location i {
+        margin-right: 4px;
+        color: #DAAB2D;
+    }
+
+/* ===== Description ===== */
+.property-description {
+    font-size: 0.78rem;       /* ← smaller */
+    color: #A57A03;           /* ← muted golden */
+    margin: 0;
+    font-weight: 400;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;    /* ← max 2 lines, then ... */
+    -webkit-box-orient: vertical;
+}
+
+/* ===== Stats Row ===== */
+.property-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(165, 122, 3, 0.15);
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    color: #E8D5A3;
+    font-weight: 600;
+}
+
+    .stat i {
+        color: #DAAB2D;
+        font-size: 0.9rem;
+    }
+
+.stat-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(165, 122, 3, 0.3);
+}

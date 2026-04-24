@@ -1,0 +1,96 @@
+﻿@using RealEstateProj.Data
+@inject NavigationManager Navigation
+
+<div class="card-wrapper" @onclick="NavToExpanded">
+    <div class="property-card">
+
+       
+        <div class="property-image">
+            @if (Images != null && Images.Count > 0)
+            {
+                var img = Images[currentIndex];
+                var src = $"data:{img.Type};base64,{Convert.ToBase64String(img.ImageData)}";
+                <img src="@src" alt="Property" />
+
+                @if (Images.Count > 1)
+                {
+                    <button class="img-arrow left" @onclick:stopPropagation="true" @onclick="Prev">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button class="img-arrow right" @onclick:stopPropagation="true" @onclick="Next">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                    <div class="img-dots">
+                        @for (int i = 0; i < Images.Count; i++)
+                        {
+                            var idx = i;
+                            <span class="dot @(currentIndex == idx ? "active" : "")"
+                                  @onclick:stopPropagation="true"
+                                  @onclick="() => currentIndex = idx"></span>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-image"><i class="fa-solid fa-image"></i></div>
+            }
+
+           
+            @if (Status != null)
+            {
+                <span class="badge-status">@Status</span>
+            }
+
+       
+            <span class="badge-price">₪@Price.ToString("N0")</span>
+        </div>
+
+        
+        <div class="property-body">
+
+            <h3 class="property-title">@Title</h3>
+
+            <p class="property-location">
+                <i class="fa-solid fa-location-dot"></i> @City, @Address
+            </p>
+
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <p class="property-description">@Description</p>
+            }
+
+            <div class="property-stats">
+                <span class="stat">
+                    <i class="fa-solid fa-bed"></i> @Rooms
+                </span>
+                <span class="stat-divider"></span>
+                <span class="stat">
+                    <i class="fa-solid fa-ruler-combined"></i> @Size מ"ר
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int PropertyId { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string City { get; set; } = "";
+    [Parameter] public string Address { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public int Price { get; set; }
+    [Parameter] public double Rooms { get; set; }
+    [Parameter] public double Size { get; set; }
+    [Parameter] public Status? Status { get; set; }
+    [Parameter] public List<PropertyImage>? Images { get; set; }
+
+    int currentIndex = 0;
+
+    void Next() => currentIndex = (currentIndex + 1) % (Images?.Count ?? 1);
+    void Prev() => currentIndex = (currentIndex - 1 + (Images?.Count ?? 1)) % (Images?.Count ?? 1);
+
+    void NavToExpanded() => Navigation.NavigateTo($"/property/{PropertyId}");
+}

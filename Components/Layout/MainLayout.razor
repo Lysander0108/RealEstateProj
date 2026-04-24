@@ -1,12 +1,9 @@
 ﻿@inherits LayoutComponentBase
- @using RealEstateProj.Components.Pages.Identity
- @inject AuthService authservice
- @inject NavigationManager navigationManager
+@using RealEstateProj.Components.Pages.Identity
+@inject AuthService authservice
+@inject NavigationManager navigationManager
 
 <SideBar isOpen="@toggleSideBar" ToggleSideBar="@ToggleSideBar" />
-
-
-
 
 <div class="top-row">
     <div class="left-section">
@@ -18,7 +15,7 @@
                href="https://github.com/Lysander0108/RealEstateProj" style="30px" target="_blank" rel="noopener noreferrer"></a>
         </nav>
     </div>
- 
+
     <div class="right-section">
         <div class="top-rowText phoneNumber">
             055-555-5555
@@ -43,16 +40,19 @@
     bool toggleSideBar;
     void ToggleSideBar() => toggleSideBar = !toggleSideBar;
 
-    string uri = "";
-
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        var uri = navigationManager.Uri.ToLower();
+        if (firstRender)
+        {
+            await authservice.LoadAsync();  // ← loads user from localStorage FIRST
 
-        if (uri.Contains("/signin") || uri.Contains("/login"))
-            return;
+            var uri = navigationManager.Uri.ToLower();
+            if (!authservice.IsLogged() && !uri.Contains("/signin") && !uri.Contains("/login"))
+            {
+                navigationManager.NavigateTo("/signin");
+            }
 
-        if (!authservice.IsLogged())
-            navigationManager.NavigateTo("/signin");
+            StateHasChanged();
+        }
     }
 }

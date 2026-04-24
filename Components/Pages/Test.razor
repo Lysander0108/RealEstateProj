@@ -3,9 +3,24 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using RealEstateProj.Data.Interfaces
 @using RealEstateProj.Data.Service
+@using RealEstateProj.Components.Pages.Identity
+
 @inject IUserService UserService;
+@inject IPropertyService propertyService;
+@inject AuthService authService;
+@inject NavigationManager navmag;
 
 <PageTitle>Test</PageTitle>
+
+
+<h3>property card</h3>
+
+@foreach (var property in properties)
+{
+    <ProperyCard Title="@property.Title" City="@property.City" Address="@property.Address" Price="property.Price" Rooms="@property.Rooms" Size="@property.Size" Status="@property.Status" Images="@property.Images"></ProperyCard>
+}
+
+
 <h3>Get all users</h3>
 <button @onclick="GetAllUsers">Show All Users</button>
 <br/>
@@ -19,6 +34,21 @@
 
 
 @*TODO add placeholders *@
+<h3> logout</h3>
+<button @onclick="Logout">log out</button>
+
+@if (authService.CurrentUser != null)
+{
+    <div style="margin-top: 0.75rem; padding: 0.75rem; background: rgba(218,171,45,0.08); border: 1px solid rgba(218,171,45,0.2); border-radius: 8px; font-size: 0.9rem;">
+        <p><strong>Name:</strong> @authService.CurrentUser.UserName</p>
+        <p><strong>Email:</strong> @authService.CurrentUser.Email</p>
+        <p><strong>Role:</strong> @authService.CurrentUser.Role</p>
+    </div>
+}
+else
+{
+    <p style="color: #A57A03;">Loading user...</p>
+}
 
 <h3>Add user</h3>
 
@@ -126,13 +156,28 @@
     string message = "";
     string messageColor = "";
 
+    string? currentuser = "";
+
+    List<Property> properties;
+
+    protected override void OnInitialized()
+    {
+        properties = propertyService.GetAllProperties().ToList();
+    }
+
+    public void Logout() {
+        authService.LogOut();
+        navmag.NavigateTo("/Signin");
+
+    }
+
     public void HandleUpdate()
     {
         if(idToChange != null){
-        if (updateOption == "name" )
-            UserService.UpdateUserName(idToChange.Value, updateValue);
-        if (updateOption == "email")
-            UserService.UpdateUserEmail(idToChange.Value, updateValue);
+            if (updateOption == "name" )
+                UserService.UpdateUserName(idToChange.Value, updateValue);
+            if (updateOption == "email")
+                UserService.UpdateUserEmail(idToChange.Value, updateValue);
         }
     }
 
@@ -171,5 +216,14 @@
     public void GetAllUsers()
     {
         allUsers = UserService.GetAllUsers();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await authService.LoadAsync();  
+            StateHasChanged();
+        }
     }
 }

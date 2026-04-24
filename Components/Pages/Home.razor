@@ -1,5 +1,30 @@
 ﻿@page "/"
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Interfaces
+@inject IPropertyService propertyService
 
-<PageTitle>Home</PageTitle>
+<div class="cards-grid">
+    @foreach(var property in properties)
+    {
+        <ProperyCard PropertyId="@property.Id"
+                     Title="@property.Title"
+                     City="@property.City"
+                     Address="@property.Address"
+                     Price="@property.Price"
+                     Rooms="@property.Rooms"
+                     Size="@property.Size"
+                     Status="@property.Status"
+                     Description="@property.Description"
+                     Images="@property.Images" />
+    }
+</div>
 
+@code{
+    List<Property> properties = new();
+
+    protected override void OnInitialized()
+    {
+        properties = propertyService.GetAllProperties().ToList();
+    }
+}
 

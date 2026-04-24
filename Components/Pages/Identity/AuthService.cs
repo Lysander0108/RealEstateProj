@@ -1,21 +1,48 @@
-﻿using RealEstateProj.Data;
+﻿using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using RealEstateProj.Data;
+
 
 namespace RealEstateProj.Components.Pages.Identity
 {
     public class AuthService
     {
-        public User? currentUser  {get;private set;}
-    
-        public bool IsLogged() => currentUser != null;
+        private readonly ProtectedLocalStorage _storage;
+        private const string Key = "currentUser";
 
-        public bool IsAgent() => currentUser?.Role == Role.AGENT;
+        public User? CurrentUser { get; private set; }
 
-        public bool IsUser() => currentUser?.Role == Role.USER;
+        public AuthService(ProtectedLocalStorage storage)
+        {
+            _storage = storage;
+        }
 
-        public void Sighin(User user) => currentUser = user;
+        public async Task LoadAsync()
+        {
+            try
+            {
+                var result = await _storage.GetAsync<User>(Key);
+                CurrentUser = result.Success ? result.Value : null;
+            }
+            catch
+            {
+                CurrentUser = null;
+            }
+        }
 
-        public void LogOut() => currentUser = null;
+        public async Task Sighin(User user)
+        {
+            CurrentUser = user;
+            await _storage.SetAsync(Key, user);
+        }
 
-        
+        public async Task LogOut()
+        {
+            CurrentUser = null;
+            await _storage.DeleteAsync(Key);
+        }
+
+        public bool IsLogged() => CurrentUser != null;
+        public bool IsAgent() => CurrentUser?.Role == Role.AGENT;
+        public bool IsUser() => CurrentUser?.Role == Role.USER;
     }
 }

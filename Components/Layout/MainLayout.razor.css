@@ -102,6 +102,7 @@ nav {
     padding: 0;
     max-width: 100%;
     min-height: calc(100vh - 3.5rem);
+    background: url("/telaviv.png") center / cover no-repeat;
 }
 
 /* ===== Error UI ===== */

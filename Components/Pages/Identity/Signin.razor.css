@@ -3,20 +3,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: calc(100vh - 3.5rem);
     margin: -1.5rem;
     padding: 1rem;
+    background: rgba(0, 0, 0, 0.35);
 }
 
 /* ===== Card ===== */
 .login-card {
-    background: #fff;
+    background: rgba(38, 38, 38, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-radius: 16px;
     padding: 2.5rem 2rem;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(165, 122, 3, 0.2);
     animation: slideUp 0.5s ease-out;
 }
 
@@ -25,7 +28,6 @@
         opacity: 0;
         transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -38,19 +40,17 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 700;
     font-size: 1.6rem;
-    color: #222;
+    background: linear-gradient(135deg, #DAAB2D, #A57A03);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 1.5rem;
     animation: fadeIn 0.6s ease-out 0.2s both;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ===== Form layout ===== */
@@ -67,47 +67,43 @@
     animation: slideIn 0.4s ease-out both;
 }
 
-    .input-group:nth-child(1) {
-        animation-delay: 0.2s;
-    }
-
-    .input-group:nth-child(2) {
-        animation-delay: 0.35s;
-    }
+    .input-group:nth-child(1) { animation-delay: 0.2s; }
+    .input-group:nth-child(2) { animation-delay: 0.35s; }
 
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-.input-group input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fafafa;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-    box-sizing: border-box;
-    outline: none;
-}
-
-    .input-group input:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-        background: #fff;
+    .input-group input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border: 1px solid rgba(165, 122, 3, 0.25);
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: rgba(26, 26, 26, 0.85);
+        color: #E8D5A3;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        box-sizing: border-box;
+        outline: none;
     }
 
-    .input-group input::placeholder {
-        color: #aaa;
+        .input-group input:focus {
+            border-color: #DAAB2D;
+            box-shadow: 0 0 0 3px rgba(165, 122, 3, 0.2);
+            background: rgba(26, 26, 26, 0.85);
+        }
+
+        .input-group input::placeholder {
+            color: #A57A03;
+        }
+
+    .input-group input:-webkit-autofill,
+    .input-group input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset;
+        -webkit-text-fill-color: #E8D5A3;
+        caret-color: #DAAB2D;
     }
 
 .input-group i {
@@ -115,14 +111,14 @@
     top: 50%;
     left: 0.85rem;
     transform: translateY(-50%);
-    color: #bbb;
+    color: #A57A03;
     font-size: 0.9rem;
     transition: color 0.3s ease;
     pointer-events: none;
 }
 
 .input-group:focus-within i {
-    color: #007bff;
+    color: #DAAB2D;
 }
 
 /* ===== Submit button ===== */
@@ -131,24 +127,26 @@
     padding: 0.75rem;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: #fff;
+    background: linear-gradient(135deg, #DAAB2D, #DAAB2D);
+    color: #020B13;
     font-size: 1rem;
     font-weight: 600;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     cursor: pointer;
     margin-top: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
     .login-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        filter: brightness(1.15);
+        box-shadow: 0 4px 18px rgba(218, 171, 45, 0.45);
     }
 
     .login-btn:active {
         transform: translateY(0);
         box-shadow: none;
+        filter: brightness(0.95);
     }
 
 /* ===== Message feedback ===== */
@@ -163,27 +161,20 @@
 }
 
 @keyframes popIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .login-message.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: rgba(165, 122, 3, 0.12);
+    color: #DAAB2D;
+    border: 1px solid rgba(165, 122, 3, 0.3);
 }
 
 .login-message.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background: rgba(64, 1, 40, 0.1);
+    color: #cc6688;
+    border: 1px solid rgba(64, 1, 40, 0.2);
 }
 
 /* ===== Footer / switch link ===== */
@@ -191,14 +182,14 @@
     text-align: center;
     margin-top: 1.5rem;
     font-size: 0.9rem;
-    color: #666;
+    color: #A57A03;
     animation: fadeIn 0.5s ease-out 0.7s both;
 }
 
 .switch-btn {
     background: none;
     border: none;
-    color: #007bff;
+    color: #DAAB2D;
     font-weight: 600;
     cursor: pointer;
     font-size: 0.9rem;
@@ -208,7 +199,7 @@
 }
 
     .switch-btn:hover {
-        color: #0056b3;
+        color: #A57A03;
         text-decoration: underline;
     }
 

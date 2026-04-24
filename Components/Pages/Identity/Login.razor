@@ -14,7 +14,7 @@
         <h2 class="login-title">Create a new account</h2>
 
         <div class="login-form">
-            <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="AddUserForm">
+            <EditForm Model="@user" OnValidSubmit="HandleSubmit" FormName="RegisterForm">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
 
@@ -34,7 +34,7 @@
                 <button type="submit" class="login-btn">Create</button>
             </EditForm>
         </div>
-
+        
         @if (massage != "")
         {
             <div class="login-message @(color == "green" ? "success" : "error")">

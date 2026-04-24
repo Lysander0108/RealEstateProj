@@ -43,11 +43,10 @@
     private string password = "";
     private string message = "";
 
-    private void HandleSignIn()
+    private async Task HandleSignIn()
     {
         message = "";
 
-       
         var user = UserService.GetUserByEmail(email);
 
         if (user == null || !UserService.VerifyPassword(user, password))
@@ -56,7 +55,7 @@
             return;
         }
 
-        AuthService.Sighin(user);
+       await AuthService.Sighin(user);
         Navigation.NavigateTo("/");
     }
 }
