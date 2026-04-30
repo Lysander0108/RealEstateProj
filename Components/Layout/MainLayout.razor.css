@@ -4,16 +4,16 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 1.5rem;
-    background-color: #fff;
-    border-bottom: 1px solid #e8e8e8;
+    background: rgba(2, 11, 19, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #DAAB2D33;
     height: 3.5rem;
     width: 100%;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 /* ===== Left Section ===== */
@@ -23,18 +23,18 @@
     gap: 0.5rem;
 }
 
-    .left-section i.fa-bars {
-        font-size: 1.1rem;
-        color: #444;
-        padding: 0.4rem;
-        border-radius: 6px;
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
+.left-section i.fa-bars {
+    font-size: 1.1rem;
+    color: #DAAB2D;
+    padding: 0.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
 
-        .left-section i.fa-bars:hover {
-            background-color: #f0f0f0;
-            color: #007bff;
-        }
+.left-section i.fa-bars:hover {
+    background: #DAAB2D22;
+}
 
 /* ===== Nav ===== */
 nav {
@@ -42,36 +42,37 @@ nav {
     align-items: center;
 }
 
-    nav .nav-link {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.35rem 0.75rem;
-        color: #444;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.95rem;
-        letter-spacing: 0.3px;
-        border-radius: 6px;
-        transition: background-color 0.2s ease, color 0.2s ease;
-    }
+nav .nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    color: #DAAB2D;
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+}
 
-        nav .nav-link:hover {
-            color: #007bff;
-            background-color: rgba(0, 123, 255, 0.06);
-            text-decoration: none;
-        }
+nav .nav-link:hover {
+    color: #f0e6c8;
+    background: #DAAB2D11;
+    text-decoration: none;
+}
 
-    nav .fa-github {
-        font-size: 1.15rem;
-        padding: 0.35rem 0.5rem;
-        border-radius: 6px;
-        transition: color 0.2s ease, background-color 0.2s ease;
-    }
+nav .fa-github {
+    font-size: 1.15rem;
+    color: #ccc;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    transition: color 0.2s;
+}
 
-        nav .fa-github:hover {
-            color: #007bff !important;
-            background-color: rgba(0, 123, 255, 0.06);
-        }
+nav .fa-github:hover {
+    color: #DAAB2D !important;
+}
 
 /* ===== Right Section ===== */
 .right-section {
@@ -83,17 +84,20 @@ nav {
 .top-rowText.phoneNumber {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #666;
-    letter-spacing: 0.5px;
+    font-family: 'Playfair Display', serif;
+    color: #DAAB2D;
+    letter-spacing: 1px;
 }
 
 .top-rowText-logo {
+    font-family: 'Playfair Display', serif;
     font-weight: 800;
-    font-size: 1.3rem;
-    letter-spacing: 3px;
-    color: #222;
+    font-size: 1.4rem;
+    letter-spacing: 4px;
+    color: #DAAB2D;
     text-transform: uppercase;
     user-select: none;
+    text-shadow: 0 0 12px rgba(218, 171, 45, 0.4);
 }
 
 /* ===== Main Content ===== */
@@ -102,7 +106,7 @@ nav {
     padding: 0;
     max-width: 100%;
     min-height: calc(100vh - 3.5rem);
-    background: url("/telaviv.png") center / cover no-repeat;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("/telaviv.png") center / cover no-repeat fixed;
 }
 
 /* ===== Error UI ===== */
@@ -110,7 +114,7 @@ nav {
     color-scheme: light only;
     background: lightyellow;
     bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -1px 2px rgba(0,0,0,0.2);
     box-sizing: border-box;
     display: none;
     left: 0;
@@ -120,41 +124,23 @@ nav {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
 
-/* ===== Phone ===== */
+/* ===== Mobile ===== */
 @media (max-width: 480px) {
-    .top-row {
-        padding: 0 0.75rem;
-    }
-
-    nav .nav-link {
-        font-size: 0.85rem;
-        padding: 0.3rem 0.5rem;
-    }
-
-    .top-rowText.phoneNumber {
-        display: none;
-    }
-
-    .top-rowText-logo {
-        font-size: 1rem;
-        letter-spacing: 2px;
-    }
+    .top-row { padding: 0 0.75rem; }
+    nav .nav-link { font-size: 0.85rem; padding: 0.3rem 0.5rem; }
+    .top-rowText.phoneNumber { display: none; }
+    .top-rowText-logo { font-size: 1rem; letter-spacing: 2px; }
 }
 
 /* ===== Tablet ===== */
 @media (min-width: 481px) and (max-width: 768px) {
-    .top-rowText.phoneNumber {
-        font-size: 0.85rem;
-    }
-
-    .top-rowText-logo {
-        font-size: 1.1rem;
-    }
+    .top-rowText.phoneNumber { font-size: 0.85rem; }
+    .top-rowText-logo { font-size: 1.1rem; }
 }
