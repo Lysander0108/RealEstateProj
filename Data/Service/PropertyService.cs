@@ -60,5 +60,18 @@ namespace RealEstateProj.Data.Service
             using var context = _dbContextFactory.CreateDbContext();
             return context.Properties.Where(x => x.Status == Status.Sale).ToList();
         }
+
+        public void UpdatePropertyBySmth(int id, Action<Property> update)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            var prop = context.Properties.Find(id);
+
+            if (prop is null)
+                return;
+
+            update(prop);
+            context.SaveChanges();
+
+        }
     }
 }

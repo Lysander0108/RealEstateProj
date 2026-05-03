@@ -18,7 +18,7 @@
             Description="@property.Description"
             Images="@property.Images" />
         }
-    
+
   
 </div>
 
@@ -26,26 +26,31 @@
     List<Property> properties = new();
     [Parameter] public string? Fillter { get; set; }
 
-     public void FillterProperty()
+    public void FillterProperty()
     {
-      switch(Fillter)
+        switch(Fillter)
         {
             case "Rent":
-               properties = propertyService.GetAllForRent();
+                properties = propertyService.GetAllForRent();
                 break;
 
             case "Sale":
-              properties = propertyService.GetAllForSale();
+                properties = propertyService.GetAllForSale();
                 break;
 
             default:
+                properties = propertyService.GetAllProperties().ToList();
                 break;
         }
+    }
+    protected override void OnParametersSet()
+    {
+        FillterProperty();
     }
 
     protected override void OnInitialized()
     {
         properties = propertyService.GetAllProperties().ToList();
-    }
+     }
 }
 

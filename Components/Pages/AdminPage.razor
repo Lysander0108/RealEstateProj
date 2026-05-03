@@ -1,0 +1,25 @@
+﻿@page "/AdminPage"
+@using RealEstateProj.Components.Pages.Identity
+@using RealEstateProj.Data.Service
+@inject AuthService auth
+@inject PropertyService propertyService
+@inject NavigationManager navigationManager
+
+
+
+
+@code {
+
+   
+
+    public void KickOut()
+    {
+        navigationManager.NavigateTo("/");
+    }
+
+    protected override void OnInitialized()
+    {
+        if (auth.CurrentUser is null)
+            KickOut();
+    }
+}

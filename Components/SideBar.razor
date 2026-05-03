@@ -10,9 +10,9 @@
 <div class="SideBar @(isOpen ? "open" : "close")">
     
     <div class="SideBar-options">
-        <button @onclick='() => NavigateAndClose("/")'>Home</button>
-        <button @onclick='() => NavigateAndClose("/?Status=Rent")'>ForRent</button>
-        <button @onclick='() => NavigateAndClose("/?Status=Sale")'>ForSale</button>
+        <button @onclick='() => NavigateAndClose("/")'>All properties</button>
+        <button @onclick='() => NavigateAndClose("/Rent")'>For Rent</button>
+        <button @onclick='() => NavigateAndClose("/Sale")'>For Sale</button>
         @if (auth.IsLogged())
         {
             <button @onclick="LogOut" >Log out</button>            
