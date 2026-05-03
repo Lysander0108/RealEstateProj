@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 3.5rem);
-    margin: -1.5rem;
     padding: 1rem;
     background: rgba(0, 0, 0, 0.35);
 }

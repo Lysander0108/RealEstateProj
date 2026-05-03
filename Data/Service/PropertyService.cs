@@ -47,5 +47,18 @@ namespace RealEstateProj.Data.Service
             using var context = _dbContextFactory.CreateDbContext();
             return context.Properties.ToList();
         }
+
+        public List<Property> GetAllForRent()
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            return context.Properties.Where( x => x.Status == Status.Rent).ToList();
+
+        }
+
+        public List<Property> GetAllForSale()
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            return context.Properties.Where(x => x.Status == Status.Sale).ToList();
+        }
     }
 }

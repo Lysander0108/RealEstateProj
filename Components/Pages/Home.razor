@@ -1,26 +1,47 @@
-﻿@page "/"
+﻿@page "/{Fillter?}"
 @using RealEstateProj.Data
 @using RealEstateProj.Data.Interfaces
 @inject IPropertyService propertyService
 
 <div class="cards-grid">
-    @foreach(var property in properties)
-    {
-        <ProperyCard PropertyId="@property.Id"
-                     Title="@property.Title"
-                     City="@property.City"
-                     Address="@property.Address"
-                     Price="@property.Price"
-                     Rooms="@property.Rooms"
-                     Size="@property.Size"
-                     Status="@property.Status"
-                     Description="@property.Description"
-                     Images="@property.Images" />
-    }
+    
+        @foreach (var property in properties)
+        {
+            <ProperyCard PropertyId="@property.Id"
+            Title="@property.Title"
+            City="@property.City"
+            Address="@property.Address"
+            Price="@property.Price"
+            Rooms="@property.Rooms"
+            Size="@property.Size"
+            Status="@property.Status"
+            Description="@property.Description"
+            Images="@property.Images" />
+        }
+    
+  
 </div>
 
 @code{
     List<Property> properties = new();
+    [Parameter] public string? Fillter { get; set; }
+
+     public void FillterProperty()
+    {
+      switch(Fillter)
+        {
+            case "Rent":
+               properties = propertyService.GetAllForRent();
+                break;
+
+            case "Sale":
+              properties = propertyService.GetAllForSale();
+                break;
+
+            default:
+                break;
+        }
+    }
 
     protected override void OnInitialized()
     {

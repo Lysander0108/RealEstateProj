@@ -1,4 +1,6 @@
-﻿@inject NavigationManager navigationManager
+﻿@using RealEstateProj.Components.Pages.Identity
+@inject NavigationManager navigationManager
+@inject AuthService auth
 
 @if (isOpen)
 {
@@ -9,9 +11,18 @@
     
     <div class="SideBar-options">
         <button @onclick='() => NavigateAndClose("/")'>Home</button>
-        <button @onclick='() => NavigateAndClose("/")'>ForRent</button>
-        <button @onclick='() => NavigateAndClose("/")'>LforSale</button>
-        <button @onclick='() => NavigateAndClose("/")'>Contact</button>
+        <button @onclick='() => NavigateAndClose("/?Status=Rent")'>ForRent</button>
+        <button @onclick='() => NavigateAndClose("/?Status=Sale")'>ForSale</button>
+        @if (auth.IsLogged())
+        {
+            <button @onclick="LogOut" >Log out</button>            
+
+        }
+        else
+        {
+            <button @onclick=' () => NavigateAndClose("/login")'>Login</button>
+        }
+
     </div>
 </div>
 
@@ -19,6 +30,17 @@
     [Parameter] public bool isOpen { get; set; }
     [Parameter] public EventCallback ToggleSideBar { get; set; }
 
+
+
+    public async Task LogOut()
+    {
+        await auth.LogOut();
+        await NavigateAndClose("/sighin");
+    }
+
+
+
+   
     async Task NavigateAndClose(string url)
     {
         await ToggleSideBar.InvokeAsync();

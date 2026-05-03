@@ -1,114 +1,79 @@
-﻿.SideBar {
+﻿.login close {
+    visibility: hidden;
+}
+
+.SideBar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
+    width: 260px;
     height: 100%;
-    background-color: #fff;
-    box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    background: #0b1620;
+    border-right: 1px solid #DAAB2D44;
     z-index: 9999;
-    transition: transform 0.3s ease;
-    padding: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .SideBar.open {
     transform: translateX(0);
+    box-shadow: 6px 0 32px rgba(0, 0, 0, 0.7);
 }
 
 .SideBar.close {
-    transform: translateX(-100%);
+    transform: translateX(-110%); /* extra 10% hides the shadow peek */
+    box-shadow: none;
 }
 
 .SideBar-options {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-top: calc(1rem + 5px);
+    gap: 0.4rem;
+    margin-top: 3.5rem;
+    flex: 1;
+}
+
+.SideBar-options button {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #f0e6c8;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.75rem 1.2rem;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    width: 100%;
+}
+
+.SideBar-options button:hover {
+    background: #DAAB2D22;
+    border-color: #DAAB2D44;
+    color: #DAAB2D;
 }
 
 .sidebar-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9998;
 }
 
-.SideBar-options button {
-    text-align: left;
-    background: none;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
+.login.close {
+    visibility: hidden;
 }
 
-.SideBar-options button:hover {
-    background-color: #f0f0f0;
-    border-radius: 8px;
-}
-
-.close-X {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    display: block;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    line-height: 1;
-    cursor: pointer;
-    color: #444;
-    padding: 4px;
-    margin-left: auto;
-    margin-bottom: 0.5rem;
-}
-
-.sidebar button {
-    font-family: Arial;
-    margin: 0;
-    color: #555;
-    line-height: 1.4;
-    font-size: 0.95rem;
-    width: 100%;
-}
-
-/* ===== Phone (max-width: 480px) ===== */
 @media (max-width: 480px) {
-    .SideBar {
-        width: 100%;          /* Full screen width */
-        box-shadow: none;
-        padding: 0.75rem;
-    }
-
-    .SideBar-options {
-        gap: 0.25rem;
-        margin-top: 0.75rem;
-    }
-
-    .SideBar-options button {
-        font-size: 1.2rem;     /* Bigger tap targets */
-        padding: 0.75rem;
-    }
-
-    .close-X {
-        font-size: 28px;       /* Bigger close button */
-        top: 12px;
-        right: 16px;
-    }
+    .SideBar { width: 80%; }
+    .SideBar-options button { font-size: 1.1rem; padding: 0.85rem 1rem; }
 }
 
-/* ===== Small tablets (max-width: 768px) ===== */
 @media (max-width: 768px) and (min-width: 481px) {
-    .SideBar {
-        width: 70%;            /* Takes 70% of screen */
-    }
-
-    .SideBar-options button {
-        font-size: 1.1rem;
-        padding: 0.65rem;
-    }
+    .SideBar { width: 65%; }
 }
 

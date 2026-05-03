@@ -2,11 +2,12 @@
 {
     public interface IPropertyService
     {
-        public void AddProperty(Property property);
-        public void RemovePropertyById(int id);
-        public List<Property> GetPropertysListByRooms(int rooms);
-        public Property GetPropertyById(int id);
-       public List<Property> GetAllProperties();
-
+        void AddProperty(Property property);
+        void RemovePropertyById(int id);
+        List<Property> GetPropertysListByRooms(int rooms);
+        Property GetPropertyById(int id);
+        List<Property> GetAllProperties();
+        List<Property> GetAllForSale();
+        List<Property> GetAllForRent();
     }
 }

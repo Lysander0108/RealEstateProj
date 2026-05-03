@@ -17,8 +17,8 @@ namespace RealEstateProj.Data
 
     public enum Status
     {
-        ForSale,
-        ForRent,
+        Sale,
+        Rent,
         Bought
     }
 }
