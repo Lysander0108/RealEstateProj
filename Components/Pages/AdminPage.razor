@@ -1,25 +1,195 @@
 ﻿@page "/AdminPage"
 @using RealEstateProj.Components.Pages.Identity
-@using RealEstateProj.Data.Service
+@using RealEstateProj.Data
+@using RealEstateProj.Data.Interfaces
 @inject AuthService auth
-@inject PropertyService propertyService
+@inject IPropertyService propertyService
+@inject IPropertyImageService propertyImageService
 @inject NavigationManager navigationManager
 
+<!-- ===== Update ===== -->
+<h3>Update Property</h3>
+<InputNumber @bind-Value="propertyId" placeholder="Property ID" />
+<InputSelect @bind-Value="propertyToChange">
+    <option value="">Select field</option>
+    <option value="title">Title</option>
+    <option value="city">City</option>
+    <option value="address">Address</option>
+    <option value="price">Price</option>
+    <option value="rooms">Rooms</option>
+    <option value="size">Size</option>
+    <option value="description">Description</option>
+</InputSelect>
+<InputText @bind-Value="newValue" placeholder="New value" />
+@if (propertyId > 0 && propertyToChange != "" && newValue != "")
+{
+    <button @onclick="HandleSubmit">Update</button>
+}
+@if (updateMsg != null)
+{
+    <p style="color:@(updateMsg.StartsWith("✅") ? "green" : "red")">@updateMsg</p>
+}
 
+<hr />
 
+<!-- ===== Add Images ===== -->
+<h3>Add Images</h3>
+<InputNumber @bind-Value="uploadPropertyId" placeholder="Property ID" />
+<InputFile OnChange="HandleFileSelected" multiple accept="image/*" />
+@if (selectedFiles.Count > 0)
+{
+    <p>@selectedFiles.Count file(s) selected</p>
+    <button @onclick="Upload">Upload</button>
+}
+@if (uploadMsg != null)
+{
+    <p style="color:@(uploadMsg.StartsWith("✅") ? "green" : "red")">@uploadMsg</p>
+}
+
+@foreach (var img in images)
+{
+    <img src="data:@img.Type;base64,@Convert.ToBase64String(img.ImageData)" width="120" />
+    <button @onclick="() => Delete(img.Id)">Delete</button>
+}
+@if (deleteImgMsg != null)
+{
+    <p style="color:@(deleteImgMsg.StartsWith("✅") ? "green" : "red")">@deleteImgMsg</p>
+}
+
+<hr />
+
+<!-- ===== Delete Property by ID ===== -->
+<h3>Delete Property by ID</h3>
+<InputNumber @bind-Value="removePropId" placeholder="Property ID" />
+@if (removePropId > 0)
+{
+    <button @onclick="removeProperty">Remove</button>
+}
+
+<hr />
+
+<!-- ===== Delete Image by ID ===== -->
+<h3>Delete Image by ID</h3>
+<InputNumber @bind-Value="removeImageId" placeholder="Image ID" />
+@if (removeImageId > 0)
+{
+    <button @onclick="RemoveHandle">Remove</button>
+}
+@if (removeMsg != null)
+{
+    <p style="color:@(removeMsg.StartsWith("✅") ? "green" : "red")">@removeMsg</p>
+}
 
 @code {
+    int propertyId = 0;
+    string propertyToChange = "";
+    string newValue = "";
+    string? updateMsg;
 
-   
+    int uploadPropertyId = 0;
+    int removeImageId = 0;
+    int removePropId = -1;
+    List<PropertyImage> images = new();
+    List<IBrowserFile> selectedFiles = new();
 
-    public void KickOut()
+    string? uploadMsg;
+    string? deleteImgMsg;
+    string? removeMsg;
+
+    void HandleSubmit()
     {
-        navigationManager.NavigateTo("/");
+        try
+        {
+            propertyService.UpdatePropertyBySmth(propertyId, p =>
+            {
+                switch (propertyToChange.ToLower())
+                {
+                    case "title":       p.Title = newValue; break;
+                    case "city":        p.City = newValue; break;
+                    case "address":     p.Address = newValue; break;
+                    case "price":       p.Price = (int)double.Parse(newValue); break;
+                    case "rooms":       p.Rooms = double.Parse(newValue); break;
+                    case "size":        p.Size = double.Parse(newValue); break;
+                    case "description": p.Description = newValue; break;
+                }
+            });
+            updateMsg = "✅ Updated successfully!";
+        }
+        catch (Exception ex) { updateMsg = $"❌ Error: {ex.Message}"; }
     }
 
-    protected override void OnInitialized()
+    void RemoveHandle()
     {
-        if (auth.CurrentUser is null)
-            KickOut();
+        try
+        {
+            propertyImageService.Delete(removeImageId);
+            images = propertyImageService.GetByPropertyId(uploadPropertyId);
+            removeMsg = "✅ Image deleted!";
+        }
+        catch (Exception ex) { removeMsg = $"❌ Error: {ex.Message}"; }
+    }
+
+    void removeProperty()
+    {
+        try
+        {
+            propertyService.RemovePropertyById(removePropId);
+            removeMsg = "✅ Property removed!";
+        }
+        catch (Exception ex) { removeMsg = $"❌ Error: {ex.Message}"; }
+    }
+
+    async Task Upload()
+    {
+        try
+        {
+            if (uploadPropertyId <= 0) { uploadMsg = "❌ Enter a property ID first."; return; }
+            var property = propertyService.GetPropertyById(uploadPropertyId);
+            if (property == null) { uploadMsg = "❌ Property not found."; return; }
+
+            foreach (var file in selectedFiles)
+            {
+                using var ms = new MemoryStream();
+                await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(ms);
+                propertyImageService.Add(new PropertyImage
+                {
+                    ImageData = ms.ToArray(),
+                    Type = file.ContentType,
+                    PropertyId = uploadPropertyId,
+                    property = property
+                });
+            }
+            images = propertyImageService.GetByPropertyId(uploadPropertyId);
+            selectedFiles = new();
+            uploadMsg = $"✅ {images.Count} image(s) uploaded!";
+        }
+        catch (Exception ex) { uploadMsg = $"❌ Error: {ex.Message}"; }
+    }
+
+    async Task Delete(int id)
+    {
+        try
+        {
+            propertyImageService.Delete(id);
+            images = propertyImageService.GetByPropertyId(uploadPropertyId);
+            deleteImgMsg = "✅ Image removed!";
+        }
+        catch (Exception ex) { deleteImgMsg = $"❌ Error: {ex.Message}"; }
+    }
+
+    void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        selectedFiles = e.GetMultipleFiles(10).ToList();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await auth.LoadAsync();
+            if (auth.CurrentUser is null || !auth.IsAgent())
+                navigationManager.NavigateTo("/");
+            StateHasChanged();
+        }
     }
 }

@@ -7,7 +7,7 @@
 
 <PageTitle>@(property?.Title ?? "Property Details")</PageTitle>
 
-<!-- Toast Popup -->
+
 @if (copied)
 {
     <div class="toast-popup">
@@ -47,7 +47,6 @@
 
         <div class="exp-info-row">
 
-            <!-- Left: breadcrumb + title + status + location -->
             <div class="exp-right">
                 <div class="exp-breadcrumb">
                     <span @onclick='() => Navigation.NavigateTo("/")'><i class="fa-solid fa-house"></i></span>

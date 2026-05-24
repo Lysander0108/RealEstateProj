@@ -32,9 +32,8 @@ namespace RealEstateProj.Data.Service
         public Property GetPropertyById(int id)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            var property = context.Properties.FirstOrDefault(x  => x.Id == id);
-            return property;        
-                }
+            return context.Properties.Include(p => p.Images).FirstOrDefault(x => x.Id == id);
+        }
 
         public List<Property> GetPropertysListByRooms(int rooms)
         {
@@ -45,20 +44,19 @@ namespace RealEstateProj.Data.Service
         public List<Property> GetAllProperties()
         {
             using var context = _dbContextFactory.CreateDbContext();
-            return context.Properties.ToList();
+            return context.Properties.Include(p => p.Images).ToList();
         }
 
         public List<Property> GetAllForRent()
         {
             using var context = _dbContextFactory.CreateDbContext();
-            return context.Properties.Where( x => x.Status == Status.Rent).ToList();
-
+            return context.Properties.Include(p => p.Images).Where(x => x.Status == Status.Rent).ToList();
         }
 
         public List<Property> GetAllForSale()
         {
             using var context = _dbContextFactory.CreateDbContext();
-            return context.Properties.Where(x => x.Status == Status.Sale).ToList();
+            return context.Properties.Include(p => p.Images).Where(x => x.Status == Status.Sale).ToList();
         }
 
         public void UpdatePropertyBySmth(int id, Action<Property> update)

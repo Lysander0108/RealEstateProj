@@ -23,6 +23,11 @@
             <button @onclick=' () => NavigateAndClose("/login")'>Login</button>
         }
 
+        @if(auth.IsAgent())
+        {
+            <button @onclick='() => NavigateAndClose("/AdminPage")'>Admin</button>
+        }
+
     </div>
 </div>
 
