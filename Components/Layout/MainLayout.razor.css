@@ -132,11 +132,23 @@ nav .fa-github:hover {
 }
 
 /* ===== Mobile ===== */
-@media (max-width: 480px) {
-    .top-row { padding: 0 0.75rem; }
-    nav .nav-link { font-size: 0.85rem; padding: 0.3rem 0.5rem; }
-    .top-rowText.phoneNumber { display: none; }
-    .top-rowText-logo { font-size: 1rem; letter-spacing: 2px; }
+@media (max-width: 768px) {
+    nav {
+        display: none;
+    }
+
+    .top-rowText.phoneNumber {
+        display: none;
+    }
+
+    .top-rowText-logo {
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+
+    .top-row {
+        padding: 0 0.75rem;
+    }
 }
 
 /* ===== Tablet ===== */

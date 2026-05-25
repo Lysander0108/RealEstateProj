@@ -9,19 +9,20 @@
     <div class="left-section">
         <i class="fa-solid fa-bars" style="width: 30px; cursor: pointer;" @onclick="ToggleSideBar"></i>
         <nav>
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/test">Test</a>
+            <a class="nav-link" href="/">All Properties</a>
+            <a class="nav-link" href="/Rent">For rent</a>
+            <a class="nav-link" href="/Sale">For Sale</a>
             <a class="fa-brands fa-github text-dark"
-               href="https://github.com/Lysander0108/RealEstateProj" style="30px" target="_blank" rel="noopener noreferrer"></a>
+               href="https://github.com/Lysander0108" style="30px" target="_blank" rel="noopener noreferrer"></a>
         </nav>
     </div>
 
     <div class="right-section">
-        <div class="top-rowText phoneNumber">
+        <div class="top-rowText-logo">
             055-555-5555
         </div>
         <div class="top-rowText-logo">
-            LOGO
+            A.R. Real Estate
         </div>
     </div>
 </div>
@@ -44,7 +45,7 @@
     {
         if (firstRender)
         {
-            await authservice.LoadAsync();  // ← loads user from localStorage FIRST
+            await authservice.LoadAsync();  
 
             var uri = navigationManager.Uri.ToLower();
             if (!authservice.IsLogged() && !uri.Contains("/signin") && !uri.Contains("/login"))

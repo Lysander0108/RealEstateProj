@@ -15,11 +15,6 @@
 
 <h3>property card</h3>
 
-@foreach (var property in properties)
-{
-    <ProperyCard Title="@property.Title" City="@property.City" Address="@property.Address" Price="property.Price" Rooms="@property.Rooms" Size="@property.Size" Status="@property.Status" Images="@property.Images"></ProperyCard>
-}
-
 
 <h3>Get all users</h3>
 <button @onclick="GetAllUsers">Show All Users</button>
@@ -165,8 +160,8 @@ else
         properties = propertyService.GetAllProperties().ToList();
     }
 
-    public void Logout() {
-        authService.LogOut();
+    public async Task Logout() {
+        await  authService.LogOut();
         navmag.NavigateTo("/Signin");
 
     }
@@ -223,6 +218,8 @@ else
         if (firstRender)
         {
             await authService.LoadAsync();  
+            if (authService.CurrentUser is null || !authService.IsAgent())
+                navmag.NavigateTo("/");
             StateHasChanged();
         }
     }

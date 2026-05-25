@@ -2,7 +2,6 @@ namespace RealEstateProj.Data
 {
     public class Property
     {
-         
         public int Id { get; set; }
         public required string Title { get; set; }
         public required string City { get; set; }
@@ -11,14 +10,14 @@ namespace RealEstateProj.Data
         public double Rooms { get; set; }
         public double Size { get; set; }
         public Status? Status { get; set; }
-        public  string? Description { get; set; }
+        public string? Description { get; set; }
         public List<PropertyImage>? Images { get; set; } = new();
     }
 
     public enum Status
     {
-        Sale,
-        Rent,
-        Bought
+        Sale = 0,
+        Rent = 1,
+        Bought = 2
     }
 }

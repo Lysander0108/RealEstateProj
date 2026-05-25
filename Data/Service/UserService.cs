@@ -54,7 +54,13 @@ namespace RealEstateProj.Data.Service
 
         }
 
-
+        public void ResetPassword(User user, string Newpassword)
+        {
+            using var context = _dbContextFactory.CreateDbContext();
+            User user1 = GetUserById(user.ID);
+            user1.PasswordHashed = HashPassword(Newpassword);  
+            context.SaveChanges();
+        }
         public bool VerifyPassword(User user, string password)
         {
             var result = _passwordhasher.VerifyHashedPassword(user, user.PasswordHashed, password);

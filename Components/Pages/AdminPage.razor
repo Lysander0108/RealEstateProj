@@ -19,6 +19,7 @@
     <option value="rooms">Rooms</option>
     <option value="size">Size</option>
     <option value="description">Description</option>
+    <option value="status">Status (0=Rent, 1=Sale, 2=Bought)</option>
 </InputSelect>
 <InputText @bind-Value="newValue" placeholder="New value" />
 @if (propertyId > 0 && propertyToChange != "" && newValue != "")
@@ -35,10 +36,10 @@
 <!-- ===== Add Images ===== -->
 <h3>Add Images</h3>
 <InputNumber @bind-Value="uploadPropertyId" placeholder="Property ID" />
-<InputFile OnChange="HandleFileSelected" multiple accept="image/*" />
-@if (selectedFiles.Count > 0)
+<InputFile OnChange="HandleFileSelected" accept="image/*" />
+@if (selectedFile != null)
 {
-    <p>@selectedFiles.Count file(s) selected</p>
+    <p>@selectedFile.Name selected</p>
     <button @onclick="Upload">Upload</button>
 }
 @if (uploadMsg != null)
@@ -80,6 +81,9 @@
     <p style="color:@(removeMsg.StartsWith("✅") ? "green" : "red")">@removeMsg</p>
 }
 
+<h3>user mangmen page</h3>
+<button @onclick='()=> navigationManager.NavigateTo("/Test")'>User Managment</button>
+
 @code {
     int propertyId = 0;
     string propertyToChange = "";
@@ -90,7 +94,7 @@
     int removeImageId = 0;
     int removePropId = -1;
     List<PropertyImage> images = new();
-    List<IBrowserFile> selectedFiles = new();
+    IBrowserFile? selectedFile;
 
     string? uploadMsg;
     string? deleteImgMsg;
@@ -111,6 +115,7 @@
                     case "rooms":       p.Rooms = double.Parse(newValue); break;
                     case "size":        p.Size = double.Parse(newValue); break;
                     case "description": p.Description = newValue; break;
+                    case "status":      p.Status = (Status)int.Parse(newValue); break;
                 }
             });
             updateMsg = "✅ Updated successfully!";
@@ -139,29 +144,33 @@
         catch (Exception ex) { removeMsg = $"❌ Error: {ex.Message}"; }
     }
 
+    void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+    }
+
     async Task Upload()
     {
         try
         {
             if (uploadPropertyId <= 0) { uploadMsg = "❌ Enter a property ID first."; return; }
+            if (selectedFile == null) { uploadMsg = "❌ No file selected."; return; }
             var property = propertyService.GetPropertyById(uploadPropertyId);
             if (property == null) { uploadMsg = "❌ Property not found."; return; }
 
-            foreach (var file in selectedFiles)
+            using var ms = new MemoryStream();
+            await selectedFile.OpenReadStream(10 * 1024 * 1024).CopyToAsync(ms);
+            propertyImageService.Add(new PropertyImage
             {
-                using var ms = new MemoryStream();
-                await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(ms);
-                propertyImageService.Add(new PropertyImage
-                {
-                    ImageData = ms.ToArray(),
-                    Type = file.ContentType,
-                    PropertyId = uploadPropertyId,
-                    property = property
-                });
-            }
+                ImageData = ms.ToArray(),
+                Type = selectedFile.ContentType,
+                PropertyId = uploadPropertyId,
+                property = property
+            });
+
             images = propertyImageService.GetByPropertyId(uploadPropertyId);
-            selectedFiles = new();
-            uploadMsg = $"✅ {images.Count} image(s) uploaded!";
+            selectedFile = null;
+            uploadMsg = "✅ Image uploaded!";
         }
         catch (Exception ex) { uploadMsg = $"❌ Error: {ex.Message}"; }
     }
@@ -177,18 +186,13 @@
         catch (Exception ex) { deleteImgMsg = $"❌ Error: {ex.Message}"; }
     }
 
-    void HandleFileSelected(InputFileChangeEventArgs e)
-    {
-        selectedFiles = e.GetMultipleFiles(10).ToList();
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             await auth.LoadAsync();
             if (auth.CurrentUser is null || !auth.IsAgent())
-                navigationManager.NavigateTo("/");
+              //  navigationManager.NavigateTo("/");
             StateHasChanged();
         }
     }
