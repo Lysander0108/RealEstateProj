@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Components;
-using RealEstateProj.Components.Pages.Identity;
 using RealEstateProj.Data;
 using RealEstateProj.Data.Interfaces;
 using RealEstateProj.Data.Service;
+using RealEstateProj.Identity;
 
 
 namespace RealEstateProj

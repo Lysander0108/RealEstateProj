@@ -1,13 +1,15 @@
-﻿@page "/login"
+﻿@page "/Register"
 
+@using Microsoft.AspNetCore.Components.Forms
 @using RealEstateProj.Data
 @using RealEstateProj.Data.Interfaces
 @using RealEstateProj.Data.Service
+@using RealEstateProj.Identity
 
 @inject IUserService UserService
 @inject NavigationManager Navigation
 
-<PageTitle>Login</PageTitle>
+
 
 <div class="login-page">
     <div class="login-card">
@@ -37,39 +39,37 @@
         
         @if (massage != "")
         {
-            <div class="login-message @(color == "green" ? "success" : "error")">
+            <div class="login-message @(isError ? "error" : "success")">
                 @massage
             </div>
         }
 
         <div class="login-footer">
             <span>Already have an account?</span>
-            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/signin")'>Sign In</button>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/login")'>Log In</button>
         </div>
     </div>
 </div>
 
 
 @code {
-
     User user = new User();
     string massage = "";
-    string color = "";
-
+    bool isError;
 
     public void HandleSubmit(EditContext editContext)
     {
         var newUser = (User)editContext.Model;
         if (UserService.CheckIfUserExists(newUser))
         {
-            massage = "user already exists!";
-            color = "red";
+            massage = "User already exists";
+            isError = true;
             return;
         }
 
         UserService.AddUser(newUser);
-        massage = "user added succsesfully!";
-        color = "green";
+        massage = "User added successfully!";
+        isError = false;
 
         user = new User();
     }

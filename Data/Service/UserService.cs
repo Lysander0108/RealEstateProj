@@ -56,9 +56,14 @@ namespace RealEstateProj.Data.Service
 
         public void ResetPassword(User user, string Newpassword)
         {
+
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (string.IsNullOrWhiteSpace(Newpassword)) throw new ArgumentException("Password is required.", nameof(Newpassword));
+
+
             using var context = _dbContextFactory.CreateDbContext();
-            User user1 = GetUserById(user.ID);
-            user1.PasswordHashed = HashPassword(Newpassword);  
+            var userInDB = context.Users.Find(user.ID) ?? throw new Exception("User not found");
+            userInDB.PasswordHashed = _passwordhasher.HashPassword(userInDB, Newpassword);  
             context.SaveChanges();
         }
         public bool VerifyPassword(User user, string password)
@@ -68,21 +73,21 @@ namespace RealEstateProj.Data.Service
         }
 
         //--filter--
-        public User GetUserByUserName(string userName)
+        public User? GetUserByUserName(string userName)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            var User = context.Users.FirstOrDefault(x => x.UserName == userName);
-            return User;
+            return  context.Users.FirstOrDefault(x => x.UserName == userName);
+            
         }
 
-        public User GetUserByEmail(string email)
+        public User? GetUserByEmail(string email)
         {
             using var context = _dbContextFactory.CreateDbContext();
-            var user = context.Users.FirstOrDefault(x => x.Email == email);
+            var user = context.Users.FirstOrDefault(x => x.Email == email) ;
             return user;
         }
 
-        public User GetUserById(int id)
+        public User? GetUserById(int id)
         {
             using var context = _dbContextFactory.CreateDbContext();
             var user = context.Users.FirstOrDefault(x => x.ID == id);

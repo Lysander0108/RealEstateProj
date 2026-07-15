@@ -1,17 +1,15 @@
-﻿@page "/signin"
+﻿@page "/LogIn"
+@using RealEstateProj.Identity
 @using RealEstateProj.Data
 @using RealEstateProj.Data.Interfaces
-@using RealEstateProj.Components.Pages.Identity
 
 @inject IUserService UserService
 @inject AuthService AuthService
 @inject NavigationManager Navigation
 
-<PageTitle>Sign In</PageTitle>
-
 <div class="login-page">
     <div class="login-card">
-        <h2 class="login-title">Sign In</h2>
+        <h2 class="login-title">Log In</h2>
 
         <div class="login-form">
             <div class="input-group">

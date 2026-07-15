@@ -1,7 +1,8 @@
 ﻿@page "/AdminPage"
-@using RealEstateProj.Components.Pages.Identity
+@using RealEstateProj.Identity
 @using RealEstateProj.Data
 @using RealEstateProj.Data.Interfaces
+
 @inject AuthService auth
 @inject IPropertyService propertyService
 @inject IPropertyImageService propertyImageService
@@ -82,7 +83,7 @@
 }
 
 <h3>user mangmen page</h3>
-<button @onclick='()=> navigationManager.NavigateTo("/Test")'>User Managment</button>
+<button @onclick='()=> navigationManager.NavigateTo("/AdminUserManagment")'>User Managment</button>
 
 @code {
     int propertyId = 0;

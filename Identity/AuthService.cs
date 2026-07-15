@@ -2,7 +2,7 @@
 using RealEstateProj.Data;
 
 
-namespace RealEstateProj.Components.Pages.Identity
+namespace RealEstateProj.Identity
 {
     public class AuthService
     {

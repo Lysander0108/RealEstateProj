@@ -15,7 +15,7 @@ namespace RealEstateProj.Data
     }
 
     public enum Role
-    {+
+    {
         AGENT,
         USER
     }

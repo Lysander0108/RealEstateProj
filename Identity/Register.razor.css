@@ -158,23 +158,25 @@
     font-size: 0.9rem;
     font-weight: 500;
     animation: popIn 0.3s ease-out;
+    border: 1px solid rgba(165, 122, 3, 0.3);
 }
+
+    /* specific states */
+    .login-message.error {
+        background: linear-gradient(180deg,#f53f5d);
+        color: #fff;
+        border-color: rgba(200,50,50,0.25);
+    }
+
+    .login-message.success {
+        background: linear-gradient(180deg,#41ed66);
+        color: #fff;
+        border-color: rgba(218,171,45,0.25);
+    }
 
 @keyframes popIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
-}
-
-.login-message.success {
-    background: rgba(165, 122, 3, 0.12);
-    color: #DAAB2D;
-    border: 1px solid rgba(165, 122, 3, 0.3);
-}
-
-.login-message.error {
-    background: rgba(64, 1, 40, 0.1);
-    color: #cc6688;
-    border: 1px solid rgba(64, 1, 40, 0.2);
 }
 
 /* ===== Validation ===== */
