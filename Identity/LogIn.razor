@@ -1,7 +1,9 @@
-﻿@page "/LogIn"
+﻿@page "/login"
 @using RealEstateProj.Identity
 @using RealEstateProj.Data
 @using RealEstateProj.Data.Interfaces
+@using Microsoft.AspNetCore.Components.Web
+
 
 @inject IUserService UserService
 @inject AuthService AuthService
@@ -31,11 +33,11 @@
 
         <div class="login-footer">
             <span>Don't have an account?</span>
-            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/login")'>Register</button>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/Register")'>Register</button>
         </div>
         <div class="login-footer">
             <span>Forgot your password?</span>
-            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/ResetPassword")'>Reset</button>
+            <button class="switch-btn" @onclick='() => Navigation.NavigateTo("/ResetUserPassword")'>Reset</button>
            </div>
     </div>
 </div>

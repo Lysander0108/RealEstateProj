@@ -13,6 +13,7 @@
         <button @onclick='() => NavigateAndClose("/")'>All properties</button>
         <button @onclick='() => NavigateAndClose("/Rent")'>For Rent</button>
         <button @onclick='() => NavigateAndClose("/Sale")'>For Sale</button>
+              
         @if (auth.IsLogged())
         {
             <button @onclick="LogOut" >Log out</button>            
@@ -40,7 +41,7 @@
     public async Task LogOut()
     {
         await auth.LogOut();
-        await NavigateAndClose("/sighin");
+        await NavigateAndClose("/login");
     }
 
 

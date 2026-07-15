@@ -48,9 +48,9 @@
             await authservice.LoadAsync();  
 
             var uri = navigationManager.Uri.ToLower();
-            if (!authservice.IsLogged() && !uri.Contains("/signin") && !uri.Contains("/login"))
+            if (!authservice.IsLogged() && !uri.Contains("/register") && !uri.Contains("/login"))
             {
-                navigationManager.NavigateTo("/signin");
+                navigationManager.NavigateTo("/login");
             }
 
             StateHasChanged();
