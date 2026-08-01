@@ -85,6 +85,8 @@
 <h3>user mangmen page</h3>
 <button @onclick='()=> navigationManager.NavigateTo("/AdminUserManagment")'>User Managment</button>
 
+<FillterBar />
+
 @code {
     int propertyId = 0;
     string propertyToChange = "";
@@ -105,7 +107,7 @@
     {
         try
         {
-            propertyService.UpdatePropertyBySmth(propertyId, p =>
+            propertyService.UpdatePropertyAsync(propertyId, p =>
             {
                 switch (propertyToChange.ToLower())
                 {
@@ -119,9 +121,9 @@
                     case "status":      p.Status = (Status)int.Parse(newValue); break;
                 }
             });
-            updateMsg = "✅ Updated successfully!";
+            updateMsg = "Updated successfully!";
         }
-        catch (Exception ex) { updateMsg = $"❌ Error: {ex.Message}"; }
+        catch (Exception ex) { updateMsg = $"Error: {ex.Message}"; }
     }
 
     void RemoveHandle()
@@ -156,7 +158,7 @@
         {
             if (uploadPropertyId <= 0) { uploadMsg = "❌ Enter a property ID first."; return; }
             if (selectedFile == null) { uploadMsg = "❌ No file selected."; return; }
-            var property = propertyService.GetPropertyById(uploadPropertyId);
+            var property = await propertyService.GetPropertyByIdAsync(uploadPropertyId);
             if (property == null) { uploadMsg = "❌ Property not found."; return; }
 
             using var ms = new MemoryStream();

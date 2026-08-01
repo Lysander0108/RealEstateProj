@@ -5,9 +5,11 @@
 
 <SideBar isOpen="@toggleSideBar" ToggleSideBar="@ToggleSideBar" />
 
+
 <div class="top-row">
     <div class="left-section">
         <i class="fa-solid fa-bars" style="width: 30px; cursor: pointer;" @onclick="ToggleSideBar"></i>
+
         <nav>
             <a class="nav-link" href="/">All Properties</a>
             <a class="nav-link" href="/Rent">For rent</a>
@@ -36,6 +38,8 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+
 
 @code {
     bool toggleSideBar;

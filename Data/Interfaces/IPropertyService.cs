@@ -2,13 +2,31 @@
 {
     public interface IPropertyService
     {
-        void AddProperty(Property property);
-        void RemovePropertyById(int id);
-        void UpdatePropertyBySmth(int id, Action<Property> update);
-        List<Property> GetPropertysListByRooms(int rooms);
-        Property GetPropertyById(int id);
-        List<Property> GetAllProperties();
-        List<Property> GetAllForSale();
+        // CRUD
+
+        Task AddProperty(Property property);
+
+        Task RemovePropertyById(int id);
+
+        public Task<List<Property>> GetAllPropertiesAsync()
+
+        Task UpdatePropertyAsync(int id, Action<Property> update);
+
+        Task<Property?> GetPropertyByIdAsync(int id);
+
+
+        // THE filter!!!!! 
+        public  Task<List<Property>> Filter(Property property);
+
+        public Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice);
+
+
+        // Filters
+
+        List<Property> GetPropertiesByRooms(int rooms);
+
         List<Property> GetAllForRent();
+
+        List<Property> GetAllForSale();
     }
 }

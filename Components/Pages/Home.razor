@@ -20,6 +20,7 @@
     }
 </div>
 
+
 @code {
     List<Property> properties = new();
     [Parameter] public string? Fillter { get; set; }
@@ -35,7 +36,7 @@
                 properties = propertyService.GetAllForSale();
                 break;
             default:
-                properties = propertyService.GetAllProperties().ToList();
+           
                 break;
         }
     }
@@ -45,9 +46,9 @@
         FillterProperty();
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        properties = propertyService.GetAllProperties().ToList();
-     }
+        properties = await propertyService.GetAllPropertiesAsync();
+    }
 }
 

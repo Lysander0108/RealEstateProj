@@ -1,0 +1,100 @@
+﻿.filter-bar-body {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 260px;
+    height: 100%;
+    background: #0b1620;
+    border-left: 1px solid #DAAB2D44;
+    z-index: 20;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(218, 171, 45, 0.7);
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+    .filter-group.price {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+.input-icon {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+    .input-icon i {
+        color: #000;
+        -webkit-box-shadow: -1px 12px 20px 1px rgba(0,0,0,0.78);
+        box-shadow: -1px 12px 20px 1px rgba(0,0,0,0.78);
+        width: 25px;
+        min-width: 25px;
+        text-align: center;
+        font-size: 16px;
+    }
+
+.filter-group input {
+    flex: 1;
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid #DAAB2D;
+    border-radius: 8px;
+    background: #0b1620;
+    color: white;
+    font-size: 15px;
+    outline: none;
+}
+
+    .filter-group input::placeholder {
+        color: #DAAB2D;
+    }
+
+    .filter-group input:focus {
+        border-color: white;
+        box-shadow: 0 0 8px #DAAB2D;
+    }
+
+.filter-group.price .input-icon {
+    width: 50%;
+}
+
+
+button {
+    margin-top: 10px;
+    height: 42px;
+    width: 100%;
+    background: #0b1620;
+    color: #DAAB2D;
+    border: 1px solid #0b1620;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    button:hover {
+        background: #DAAB2D;
+        color: #0b1620;
+    }
+
+
+@media(max-width:480px) {
+    .filter-group.price {
+        flex-direction: column;
+    }
+
+        .filter-group.price .input-icon {
+            width: 100%;
+        }
+}

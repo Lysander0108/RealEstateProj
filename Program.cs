@@ -4,6 +4,8 @@ using RealEstateProj.Data;
 using RealEstateProj.Data.Interfaces;
 using RealEstateProj.Data.Service;
 using RealEstateProj.Identity;
+using Syncfusion.Blazor;
+
 
 
 namespace RealEstateProj
@@ -26,7 +28,7 @@ namespace RealEstateProj
             builder.Services.AddScoped<IPropertyImageService, PropertyImageService>();
             builder.Services.AddScoped<IUserService,UserService>();
             builder.Services.AddScoped<AuthService>();
-
+            builder.Services.AddSyncfusionBlazor();
 
 
             var app = builder.Build();

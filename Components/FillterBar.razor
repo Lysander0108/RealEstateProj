@@ -1,0 +1,69 @@
+﻿@inject IPropertyService propertyservice
+@inject NavigationManager NavMag
+
+<div class="filter-bar-body">
+<div class="filter-group price">
+    <div class="input-icon">
+        <i class="fa-solid fa-money-bill"></i>
+        <input type="number" placeholder="Min Price" @bind="minPrice" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-money-bill"></i>
+        <input type="number" placeholder="Max Price" @bind="maxPrice" />
+    </div>
+</div>
+
+<div class="filter-group >
+
+    <div class="input-icon">
+        <i class="fa-solid fa-heading"></i>
+        <input type="text" placeholder="Title" @bind="Title" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-city"></i>
+        <input type="text" placeholder="City" @bind="City" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-location-dot"></i>
+        <input type="text" placeholder="Address" @bind="Address" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-door-open"></i>
+        <input type="number" placeholder="Rooms" @bind="Rooms" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-ruler-combined"></i>
+        <input type="number" placeholder="Size" @bind="Size" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-tag"></i>
+        <input type="text" placeholder="Rent/Sale" @bind="Status" />
+    </div>
+
+    <div class="input-icon">
+        <i class="fa-solid fa-align-left"></i>
+        <input type="text" placeholder="Description" @bind="Description" />
+    </div>
+
+</div>
+@code {
+    int? minPrice;
+    int? maxPrice;
+
+    int? Id ;
+    string? Title;
+    string? City;
+    string? Address;
+    double? Rooms;
+    double? Size;
+    Status? Status;
+    string? Description;
+    
+
+}

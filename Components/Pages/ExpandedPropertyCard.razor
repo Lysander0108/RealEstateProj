@@ -117,7 +117,7 @@
 
     protected override void OnInitialized()
     {
-        property = PropertyService.GetPropertyById(PropertyId);
+        property = PropertyService.GetPropertyByIdAsync(PropertyId);
     }
 
     void Next() => currentImageIndex = (currentImageIndex + 1) % (property?.Images?.Count ?? 1);
