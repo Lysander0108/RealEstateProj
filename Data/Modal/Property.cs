@@ -7,8 +7,8 @@ namespace RealEstateProj.Data
         public required string City { get; set; }
         public required string Address { get; set; }
         public int Price { get; set; }
-        public double Rooms { get; set; }
-        public double Size { get; set; }
+        public double? Rooms { get; set; }
+        public double? Size { get; set; }
         public Status? Status { get; set; }
         public string? Description { get; set; }
         public List<PropertyImage>? Images { get; set; } = new();

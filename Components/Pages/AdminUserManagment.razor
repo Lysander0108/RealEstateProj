@@ -155,9 +155,9 @@ else
 
     List<Property> properties;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        properties = propertyService.GetAllPropertiesAsync().ToList();
+        properties = await propertyService.GetAllPropertiesAsync();
     }
 
     public async Task Logout() {

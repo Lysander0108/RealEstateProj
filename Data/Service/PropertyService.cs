@@ -57,10 +57,11 @@ namespace RealEstateProj.Data.Service
         //--Filter--
 
         //Behold! the holy filltering method!
-        public async Task<List<Property>> Filter(Property property)
+        public async Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice)
         { 
             using var context = _dbContextFactory.CreateDbContext();
             IQueryable<Property> query = context.Properties.AsQueryable();
+            
             foreach (var prop in property.GetType().GetProperties())
             {
                 var value = prop.GetValue(property);
@@ -72,18 +73,21 @@ namespace RealEstateProj.Data.Service
                     }
                 }
             }
-
+            if(minPrice.HasValue && maxPrice.HasValue)
+            {
+                query = query.Where(x => x.Price >= minPrice.Value && x.Price <= maxPrice.Value);
+            }
             return await query.Include(p => p.Images).ToListAsync();
 
         }
 
-        public async Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice)
-        {
-            using var context = _dbContextFactory.CreateDbContext();
-            var query = context.Properties.AsQueryable();
-            query = query.Where(x => x.Price >= MinPrice && x.Price <= MaxPrice);
-            return await query.Include(p => p.Images).ToListAsync();
-        }
+        //public async Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice)
+        //{
+        //    using var context = _dbContextFactory.CreateDbContext();
+        //    var query = context.Properties.AsQueryable();
+        //    query = query.Where(x => x.Price >= MinPrice && x.Price <= MaxPrice);
+        //    return await query.Include(p => p.Images).ToListAsync();
+        //}
         public List<Property> GetPropertiesByRooms(int rooms)
         {
             using var context = _dbContextFactory.CreateDbContext();

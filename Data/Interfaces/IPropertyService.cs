@@ -8,7 +8,7 @@
 
         Task RemovePropertyById(int id);
 
-        public Task<List<Property>> GetAllPropertiesAsync()
+        public Task<List<Property>> GetAllPropertiesAsync();
 
         Task UpdatePropertyAsync(int id, Action<Property> update);
 
@@ -16,9 +16,9 @@
 
 
         // THE filter!!!!! 
-        public  Task<List<Property>> Filter(Property property);
+        public  Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice);
 
-        public Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice);
+//public Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice);
 
 
         // Filters

@@ -115,9 +115,9 @@
     int currentImageIndex = 0;
     bool copied = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        property = PropertyService.GetPropertyByIdAsync(PropertyId);
+        property = await PropertyService.GetPropertyByIdAsync(PropertyId);
     }
 
     void Next() => currentImageIndex = (currentImageIndex + 1) % (property?.Images?.Count ?? 1);

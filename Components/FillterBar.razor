@@ -1,20 +1,23 @@
 ﻿@inject IPropertyService propertyservice
 @inject NavigationManager NavMag
 
-<div class="filter-bar-body">
-<div class="filter-group price">
-    <div class="input-icon">
-        <i class="fa-solid fa-money-bill"></i>
-        <input type="number" placeholder="Min Price" @bind="minPrice" />
-    </div>
+@using RealEstateProj.Components.Pages
+@using RealEstateProj.Data
 
-    <div class="input-icon">
-        <i class="fa-solid fa-money-bill"></i>
-        <input type="number" placeholder="Max Price" @bind="maxPrice" />
-    </div>
+<div class="filter-bar-body">
+    <div class="filter-group price">
+        <div class="input-icon">
+            <i class="fa-solid fa-money-bill"></i>
+            <input type="number" placeholder="Min Price" @bind="minPrice" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-money-bill"></i>
+            <input type="number" placeholder="Max Price" @bind="maxPrice" />
+        </div>
 </div>
 
-<div class="filter-group >
+<div class="filter-group" >
 
     <div class="input-icon">
         <i class="fa-solid fa-heading"></i>
@@ -43,7 +46,7 @@
 
     <div class="input-icon">
         <i class="fa-solid fa-tag"></i>
-        <input type="text" placeholder="Rent/Sale" @bind="Status" />
+        <input type="text" placeholder="Rent/Sale" @bind="status" />
     </div>
 
     <div class="input-icon">
@@ -51,7 +54,23 @@
         <input type="text" placeholder="Description" @bind="Description" />
     </div>
 
+    </div>
+    <button class="filter-btn" @onclick="ApplyFilters">Apply Filters</button>
 </div>
+
+@foreach (var property in properties)
+{
+    <ProperyCard PropertyId="@property.Id"
+        Title="@property.Title"
+        City="@property.City"
+        Address="@property.Address"
+        Price="@property.Price"
+        Rooms="@property.Rooms"
+        Size="@property.Size"
+        Status="@property.Status"
+        Description="@property.Description"
+        Images="@property.Images" />
+}
 @code {
     int? minPrice;
     int? maxPrice;
@@ -62,8 +81,31 @@
     string? Address;
     double? Rooms;
     double? Size;
-    Status? Status;
+    Status? status;
     string? Description;
-    
+
+    List<Property> properties = new List<Property>();
+
+    public async Task ApplyFilters()
+    {
+        Property filterProp = new Property
+        {
+            Title = Title,
+            City = City,
+            Address = Address,
+            Rooms = Rooms ,
+            Size = Size,
+            Status = status,
+            Description = Description
+        };
+
+        properties = await propertyservice.FilterAsync(filterProp, minPrice, maxPrice);
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        properties = new();
+    }
 
 }
