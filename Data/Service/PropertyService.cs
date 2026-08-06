@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Data.Interfaces;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace RealEstateProj.Data.Service
 {
@@ -55,39 +58,31 @@ namespace RealEstateProj.Data.Service
         }
 
         //--Filter--
-
-        //Behold! the holy filltering method!
         public async Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice)
-        { 
+        {
             using var context = _dbContextFactory.CreateDbContext();
             IQueryable<Property> query = context.Properties.AsQueryable();
-            
+
             foreach (var prop in property.GetType().GetProperties())
             {
-                var value = prop.GetValue(property);
-                if (prop.Name != "Price")
-                {
-                    if (value is not null)
-                    {
-                        query = query.Where(x => EF.Property<object>(x, prop.Name).Equals(value));//propety<obj> is a generic method from the ef thing that syas that it gets an object , x is the object itsekf and prop.name is the name in string of the property of the obj. 
-                    }
-                }
+                if( prop.Name.Equals("Price") || prop.GetValue(property) is null || prop.Name.Equals("ID")|| prop.Name.Equals("Images")) continue;
+                
+                var parameter = Expression.Parameter(typeof(Property), "p");
+                var propertyExpresion = Expression.Property(parameter, prop.Name);
+                var constand = Expression.Constant(prop.GetValue(property), prop.PropertyType);
+                var equal = Expression.Equal(propertyExpresion, constand);
+                var lambda = Expression.Lambda<Func<Property,bool>>(equal, parameter);
+                
+                query = query.Where(lambda);
+                
             }
-            if(minPrice.HasValue && maxPrice.HasValue)
+            
+            if(minPrice.HasValue && maxPrice.HasValue && minPrice <= maxPrice)
             {
-                query = query.Where(x => x.Price >= minPrice.Value && x.Price <= maxPrice.Value);
+                query = query.Where(x => x.Price >= minPrice && x.Price <= maxPrice);
             }
-            return await query.Include(p => p.Images).ToListAsync();
-
+            return await query.ToListAsync();
         }
-
-        //public async Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice)
-        //{
-        //    using var context = _dbContextFactory.CreateDbContext();
-        //    var query = context.Properties.AsQueryable();
-        //    query = query.Where(x => x.Price >= MinPrice && x.Price <= MaxPrice);
-        //    return await query.Include(p => p.Images).ToListAsync();
-        //}
         public List<Property> GetPropertiesByRooms(int rooms)
         {
             using var context = _dbContextFactory.CreateDbContext();

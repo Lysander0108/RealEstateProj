@@ -17,10 +17,7 @@
 
         // THE filter!!!!! 
         public  Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice);
-
-//public Task<List<Property>> FilterForPrice(int MinPrice, int MaxPrice);
-
-
+        
         // Filters
 
         List<Property> GetPropertiesByRooms(int rooms);

@@ -3,6 +3,28 @@
 
 @using RealEstateProj.Components.Pages
 @using RealEstateProj.Data
+@if (!properties.Any())
+{
+    <p>No properties found</p>
+}
+
+@if (properties.Count > 0)
+{
+    <p>nya</p>
+}
+@foreach (var property in properties)
+{
+    <ProperyCard PropertyId="@property.Id"
+                 Title="@property.Title"
+                 City="@property.City"
+                 Address="@property.Address"
+                 Price="@property.Price"
+                 Rooms="@property.Rooms"
+                 Size="@property.Size"
+                 Status="@property.Status"
+                 Description="@property.Description"
+                 Images="@property.Images" />
+}
 
 <div class="filter-bar-body">
     <div class="filter-group price">
@@ -58,19 +80,7 @@
     <button class="filter-btn" @onclick="ApplyFilters">Apply Filters</button>
 </div>
 
-@foreach (var property in properties)
-{
-    <ProperyCard PropertyId="@property.Id"
-        Title="@property.Title"
-        City="@property.City"
-        Address="@property.Address"
-        Price="@property.Price"
-        Rooms="@property.Rooms"
-        Size="@property.Size"
-        Status="@property.Status"
-        Description="@property.Description"
-        Images="@property.Images" />
-}
+
 @code {
     int? minPrice;
     int? maxPrice;
@@ -86,7 +96,7 @@
 
     List<Property> properties = new List<Property>();
 
-    public async Task ApplyFilters()
+    private async Task ApplyFilters()
     {
         Property filterProp = new Property
         {
