@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Components;
 using RealEstateProj.Data;
+using RealEstateProj.Data.DTO;
 using RealEstateProj.Data.Interfaces;
 using RealEstateProj.Data.Service;
 using RealEstateProj.Identity;
@@ -27,6 +28,7 @@ namespace RealEstateProj
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<IPropertyImageService, PropertyImageService>();
             builder.Services.AddScoped<IUserService,UserService>();
+            builder.Services.AddScoped<PropertyFilter>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddSyncfusionBlazor();
 

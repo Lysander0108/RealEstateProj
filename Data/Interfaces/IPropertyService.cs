@@ -1,4 +1,6 @@
-﻿namespace RealEstateProj.Data.Interfaces
+﻿using RealEstateProj.Data.DTO;
+
+namespace RealEstateProj.Data.Interfaces
 {
     public interface IPropertyService
     {
@@ -16,7 +18,7 @@
 
 
         // THE filter!!!!! 
-        public  Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice);
+        public Task<List<Property>> FilterAsync(PropertyFilter propertyFilter);
         
         // Filters
 

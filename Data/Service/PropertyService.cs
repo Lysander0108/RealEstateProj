@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using RealEstateProj.Data.Interfaces;
 using System.Reflection;
 using System.Linq.Expressions;
+using System.Linq.Dynamic.Core;
+
+using RealEstateProj.Data.DTO;
 
 namespace RealEstateProj.Data.Service
 {
@@ -58,31 +61,46 @@ namespace RealEstateProj.Data.Service
         }
 
         //--Filter--
-        public async Task<List<Property>> FilterAsync(Property property, int? minPrice, int? maxPrice)
+        public async Task<List<Property>> FilterAsync(PropertyFilter propertyFilter)
         {
             using var context = _dbContextFactory.CreateDbContext();
             IQueryable<Property> query = context.Properties.AsQueryable();
 
-            foreach (var prop in property.GetType().GetProperties())
+            foreach (var prop in propertyFilter.GetType().GetProperties())
             {
-                if( prop.Name.Equals("Price") || prop.GetValue(property) is null || prop.Name.Equals("ID")|| prop.Name.Equals("Images")) continue;
+                var value = prop.GetValue(propertyFilter);
                 
-                var parameter = Expression.Parameter(typeof(Property), "p");
-                var propertyExpresion = Expression.Property(parameter, prop.Name);
-                var constand = Expression.Constant(prop.GetValue(property), prop.PropertyType);
-                var equal = Expression.Equal(propertyExpresion, constand);
-                var lambda = Expression.Lambda<Func<Property,bool>>(equal, parameter);
+                if (value is null) continue;
+                if (prop.Name == "MinPrice" || prop.Name == "MaxPrice") continue;
                 
-                query = query.Where(lambda);
-                
+                if (prop.PropertyType == typeof(string))
+                {
+                    string searchString = value.ToString()!;
+                    if (string.IsNullOrWhiteSpace(searchString)) continue;
+
+                 
+                    query = query.Where($"{prop.Name}.Contains(@0)", new object[] { searchString });
+                }
+                else
+                {
+                    query = query.Where($"{prop.Name} == @0", new object[] { value });
+                }
             }
             
-            if(minPrice.HasValue && maxPrice.HasValue && minPrice <= maxPrice)
+            if (propertyFilter.MinPrice is not null)
             {
-                query = query.Where(x => x.Price >= minPrice && x.Price <= maxPrice);
+                query = query.Where(p => p.Price >= propertyFilter.MinPrice.Value);
             }
+            if (propertyFilter.MaxPrice is not null)
+            {
+                query = query.Where(p => p.Price <= propertyFilter.MaxPrice.Value);
+            }
+            
+            
             return await query.ToListAsync();
         }
+
+        
         public List<Property> GetPropertiesByRooms(int rooms)
         {
             using var context = _dbContextFactory.CreateDbContext();

@@ -1,17 +1,17 @@
-﻿@inject IPropertyService propertyservice
+﻿```razor
+@inject IPropertyService propertyservice
+@inject PropertyFilter Filter
 @inject NavigationManager NavMag
 
 @using RealEstateProj.Components.Pages
 @using RealEstateProj.Data
+@using RealEstateProj.Data.DTO
+
 @if (!properties.Any())
 {
     <p>No properties found</p>
 }
 
-@if (properties.Count > 0)
-{
-    <p>nya</p>
-}
 @foreach (var property in properties)
 {
     <ProperyCard PropertyId="@property.Id"
@@ -27,95 +27,113 @@
 }
 
 <div class="filter-bar-body">
+
     <div class="filter-group price">
+
         <div class="input-icon">
             <i class="fa-solid fa-money-bill"></i>
-            <input type="number" placeholder="Min Price" @bind="minPrice" />
+            <input type="number"
+                   placeholder="Min Price"
+                   @bind="Filter.MinPrice" />
         </div>
 
         <div class="input-icon">
             <i class="fa-solid fa-money-bill"></i>
-            <input type="number" placeholder="Max Price" @bind="maxPrice" />
+            <input type="number"
+                   placeholder="Max Price"
+                   @bind="Filter.MaxPrice" />
         </div>
+
+    </div>
+
+    <div class="filter-group">
+
+        <div class="input-icon">
+            <i class="fa-solid fa-heading"></i>
+            <input type="text"
+                   placeholder="Title"
+                   @bind="Filter.Title" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-city"></i>
+            <input type="text"
+                   placeholder="City"
+                   @bind="Filter.City" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-location-dot"></i>
+            <input type="text"
+                   placeholder="Address"
+                   @bind="Filter.Address" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-door-open"></i>
+            <input type="number"
+                   placeholder="Rooms"
+                   @bind="Filter.Rooms" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-ruler-combined"></i>
+            <input type="number"
+                   placeholder="Size"
+                   @bind="Filter.Size" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-tag"></i>
+            <input type="text"
+                   placeholder="Rent/Sale"
+                   @bind="StatusInput" />
+        </div>
+
+        <div class="input-icon">
+            <i class="fa-solid fa-align-left"></i>
+            <input type="text"
+                   placeholder="Description"
+                   @bind="Filter.Description" />
+        </div>
+
+    </div>
+
+    <button class="filter-btn" @onclick="ApplyFilters">
+        Apply Filters
+    </button>
+
 </div>
-
-<div class="filter-group" >
-
-    <div class="input-icon">
-        <i class="fa-solid fa-heading"></i>
-        <input type="text" placeholder="Title" @bind="Title" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-city"></i>
-        <input type="text" placeholder="City" @bind="City" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-location-dot"></i>
-        <input type="text" placeholder="Address" @bind="Address" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-door-open"></i>
-        <input type="number" placeholder="Rooms" @bind="Rooms" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-ruler-combined"></i>
-        <input type="number" placeholder="Size" @bind="Size" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-tag"></i>
-        <input type="text" placeholder="Rent/Sale" @bind="status" />
-    </div>
-
-    <div class="input-icon">
-        <i class="fa-solid fa-align-left"></i>
-        <input type="text" placeholder="Description" @bind="Description" />
-    </div>
-
-    </div>
-    <button class="filter-btn" @onclick="ApplyFilters">Apply Filters</button>
-</div>
-
 
 @code {
-    int? minPrice;
-    int? maxPrice;
-
-    int? Id ;
-    string? Title;
-    string? City;
-    string? Address;
-    double? Rooms;
-    double? Size;
-    Status? status;
-    string? Description;
-
-    List<Property> properties = new List<Property>();
+    String? StatusInput;
+    private List<Property> properties = new();
 
     private async Task ApplyFilters()
     {
-        Property filterProp = new Property
-        {
-            Title = Title,
-            City = City,
-            Address = Address,
-            Rooms = Rooms ,
-            Size = Size,
-            Status = status,
-            Description = Description
-        };
+        Filter.Status = null;
 
-        properties = await propertyservice.FilterAsync(filterProp, minPrice, maxPrice);
-        StateHasChanged();
+        switch (StatusInput?.Trim().ToLowerInvariant())
+        {
+            case "rent":
+                Filter.Status = Status.Rent;
+                break;
+
+            case "sale":
+                Filter.Status = Status.Sale;
+                break;
+
+            case "bought":
+                Filter.Status = Status.Bought;
+                break;
+        }
+
+        properties = await propertyservice.FilterAsync(Filter);
     }
 
     protected override void OnInitialized()
     {
+        
         properties = new();
     }
-
 }
