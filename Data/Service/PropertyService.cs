@@ -84,11 +84,14 @@ namespace RealEstateProj.Data.Service
                         query = query.Where($"{prop.Name}.ToLower().Contains(@0)", new object[] { searchString.ToLower() });
                         break;
 
-                    case Array arr when arr.Length == 0:
-                        continue;
+                    // Handle any enumerable (arrays, lists, etc.) in one Contains call
+                    case System.Collections.IEnumerable enumerable and not string:
+                        // convert to object[] (or to the element type array if needed)
+                        var elements = enumerable.Cast<object>().ToArray();
+                        if (elements.Length == 0) continue;
 
-                    case Array:
-                        query = query.Where($"@0.Contains({prop.Name})", new object[] { value });
+                        // Pass the whole collection as a single parameter so the dynamic Where can do @0.Contains(Property)
+                        query = query.Where($"@0.Contains({prop.Name})", new object[] { elements });
                         break;
 
                     default:

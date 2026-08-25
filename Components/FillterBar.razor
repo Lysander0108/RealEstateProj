@@ -1,4 +1,4 @@
-﻿@inject IPropertyService propertyservice
+﻿@inject IPropertyService Propertyservice
 @inject PropertyFilterDTO Filter
 @inject NavigationManager NavMag
 
@@ -18,91 +18,123 @@
             </section>
             
             <section>
-                <h6>Status</h6>
-                <InputText PlaceHlder="Status" DisplayName="Status" @bind-Value="status"></InputText>
-            </section>
-            
-            <section>
                 <h6>rooms</h6>
                 <div class="rooms">
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(1, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(1, e)" />
                         1
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(1.5, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(1.5, e)" />
                         1.5
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(2, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(2, e)" />
                         2
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(2.5, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(2.5, e)" />
                         2.5
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(3, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(3, e)" />
                         3
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(4.5, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(3.5, e)" />
+                        3.5
+                    </div>
+
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(4, e)" />
+                        4
+                    </div>
+
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(4.5, e)" />
                         4.5
                     </div>
 
                     <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(5, e)" />
+                        <input type="checkbox" @onchange="(ChangeEventArgs e) => RoomChanged(5, e)" />
                         5
-                    </div>
-
-                    <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(5.5, e)" />
-                        5.5
-                    </div>
-
-                    <div class="room-number">
-                        <input type="checkbox" @onchange="e => RoomChanged(6, e)" />
-                        6+
                     </div>
                 </div>
             </section>
-            
             <section>
-                <RadzenSlider Range="true" @bind-Value="@rangeValues" Min="3000" Max="1000000" TValue="IEnumerable<double>" />
-                <p></p>
+                <h6>status</h6>
+               
+                <select @bind="status">
+                    <option value="sale" >Sale</option>
+                    <option value="rent">Rent</option>
+                </select>
             </section>
+            <section>
+                <h6>price</h6>
+                <InputNumber TValue="int?" Placeholder="MaxPrice" @bind-Value="filterModel.MaxPrice"/>
+                <InputNumber TValue="int?" Placeholder="MinPrice" @bind-Value="filterModel.MinPrice" />
+            </section>
+            <section>
+                <h6>FreeFilter</h6>
+                <InputText Placeholder="free filter" @bind-Value="filterModel.FreeSearch" ></InputText>
+            </section>
+            <button class="btn btn-primary" type="submit" @onclick="SetFilter">clcik!</button>
         </EditForm>
+      
     </aside>
 </div>
 
+@foreach (var property in properties)
+{
+    <ProperyCard PropertyId="@property.Id"
+                 Title="@property.Title"
+                 City="@property.City"
+                 Address="@property.Address"
+                 Price="@property.Price"
+                 Rooms="@property.Rooms"
+                 Size="@property.Size"
+                 Status="@property.Status"
+                 Description="@property.Description"
+                 Images="@property.Images"/>
+}
+@foreach (var i in rooms)
+{
+    <p style="background-color: #6b9ed2">@i</p>
+}
 @code {
-    double[] rangeValues = new double[] { 20.0, 80.0 };
-                List<double> rooms = new();
-               
-
-void RoomChanged(double room, ChangeEventArgs e)
-    {
-       bool checkedValue = (bool)e.Value!;
-
-         if (checkedValue)
-            rooms.Add(room);
-          else
-             rooms.Remove(room);
-                    
-                }
-            
-    PropertyFilterDTO filterModel = new PropertyFilterDTO();
     string status;
+    List<double?> rooms = new();
+    PropertyFilterDTO filterModel = new PropertyFilterDTO();
+    List<Property> properties  = new List<Property>(); 
+         
+     void RoomChanged(double room, ChangeEventArgs e)
+        {
+            bool checkedValue = (bool)e.Value!;
+
+            if (checkedValue)
+            rooms.Add(room);
+            else
+             rooms.Remove(room); 
+        }
+
+    public async Task SetFilter()
+    {
+        filterModel.Rooms = rooms;
+        properties= await Propertyservice.FilterAsync(filterModel);
+        filterModel.Rooms = new();
+
+    }
+            
+   
 
     protected override void OnInitialized()
     {
-        double min = rangeValues[0];
-        double max = rangeValues[1];
+       
     }
 
 }
