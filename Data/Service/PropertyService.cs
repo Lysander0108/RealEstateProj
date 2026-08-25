@@ -61,7 +61,7 @@ namespace RealEstateProj.Data.Service
         }
 
         //--Filter--
-        public async Task<List<Property>> FilterAsync(PropertyFilter propertyFilter)
+        public async Task<List<Property>> FilterAsync(PropertyFilterDTO propertyFilter)
         {
             using var context = _dbContextFactory.CreateDbContext();
             IQueryable<Property> query = context.Properties.AsQueryable();
@@ -69,24 +69,34 @@ namespace RealEstateProj.Data.Service
             foreach (var prop in propertyFilter.GetType().GetProperties())
             {
                 var value = prop.GetValue(propertyFilter);
-                
                 if (value is null) continue;
-                if (prop.Name == "MinPrice" || prop.Name == "MaxPrice") continue;
-                
-                if (prop.PropertyType == typeof(string))
-                {
-                    string searchString = value.ToString()!;
-                    if (string.IsNullOrWhiteSpace(searchString)) continue;
+                if (prop.Name is "MinPrice" or "MaxPrice") continue;
 
-                 
-                    query = query.Where($"{prop.Name}.Contains(@0)", new object[] { searchString });
-                }
-                else
+                var targetProp = typeof(Property).GetProperty(prop.Name);
+                if (targetProp is null) continue;
+
+                switch (value)
                 {
-                    query = query.Where($"{prop.Name} == @0", new object[] { value });
+                    case string searchString when string.IsNullOrWhiteSpace(searchString):
+                        continue;
+
+                    case string searchString:
+                        query = query.Where($"{prop.Name}.ToLower().Contains(@0)", new object[] { searchString.ToLower() });
+                        break;
+
+                    case Array arr when arr.Length == 0:
+                        continue;
+
+                    case Array:
+                        query = query.Where($"@0.Contains({prop.Name})", new object[] { value });
+                        break;
+
+                    default:
+                        query = query.Where($"{prop.Name} == @0", new object[] { value });
+                        break;
                 }
             }
-            
+
             if (propertyFilter.MinPrice is not null)
             {
                 query = query.Where(p => p.Price >= propertyFilter.MinPrice.Value);
@@ -95,11 +105,9 @@ namespace RealEstateProj.Data.Service
             {
                 query = query.Where(p => p.Price <= propertyFilter.MaxPrice.Value);
             }
-            
-            
+
             return await query.ToListAsync();
         }
-
         
         public List<Property> GetPropertiesByRooms(int rooms)
         {

@@ -1,139 +1,109 @@
-﻿```razor
-@inject IPropertyService propertyservice
-@inject PropertyFilter Filter
+﻿@inject IPropertyService propertyservice
+@inject PropertyFilterDTO Filter
 @inject NavigationManager NavMag
 
+@using Radzen.Blazor
 @using RealEstateProj.Components.Pages
 @using RealEstateProj.Data
 @using RealEstateProj.Data.DTO
 
-@if (!properties.Any())
-{
-    <p>No properties found</p>
-}
+<div class="parent">
+    <aside class="filter-bar">
+        <header><h2> filter</h2></header>
+        <EditForm Model="filterModel">
+            
+            <section>
+                <h6>city</h6>
+                <InputText PlaceHolder="City" DisplayName="City" @bind-Value="filterModel.City"/>
+            </section>
+            
+            <section>
+                <h6>Status</h6>
+                <InputText PlaceHlder="Status" DisplayName="Status" @bind-Value="status"></InputText>
+            </section>
+            
+            <section>
+                <h6>rooms</h6>
+                <div class="rooms">
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(1, e)" />
+                        1
+                    </div>
 
-@foreach (var property in properties)
-{
-    <ProperyCard PropertyId="@property.Id"
-                 Title="@property.Title"
-                 City="@property.City"
-                 Address="@property.Address"
-                 Price="@property.Price"
-                 Rooms="@property.Rooms"
-                 Size="@property.Size"
-                 Status="@property.Status"
-                 Description="@property.Description"
-                 Images="@property.Images" />
-}
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(1.5, e)" />
+                        1.5
+                    </div>
 
-<div class="filter-bar-body">
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(2, e)" />
+                        2
+                    </div>
 
-    <div class="filter-group price">
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(2.5, e)" />
+                        2.5
+                    </div>
 
-        <div class="input-icon">
-            <i class="fa-solid fa-money-bill"></i>
-            <input type="number"
-                   placeholder="Min Price"
-                   @bind="Filter.MinPrice" />
-        </div>
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(3, e)" />
+                        3
+                    </div>
 
-        <div class="input-icon">
-            <i class="fa-solid fa-money-bill"></i>
-            <input type="number"
-                   placeholder="Max Price"
-                   @bind="Filter.MaxPrice" />
-        </div>
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(4.5, e)" />
+                        4.5
+                    </div>
 
-    </div>
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(5, e)" />
+                        5
+                    </div>
 
-    <div class="filter-group">
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(5.5, e)" />
+                        5.5
+                    </div>
 
-        <div class="input-icon">
-            <i class="fa-solid fa-heading"></i>
-            <input type="text"
-                   placeholder="Title"
-                   @bind="Filter.Title" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-city"></i>
-            <input type="text"
-                   placeholder="City"
-                   @bind="Filter.City" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-location-dot"></i>
-            <input type="text"
-                   placeholder="Address"
-                   @bind="Filter.Address" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-door-open"></i>
-            <input type="number"
-                   placeholder="Rooms"
-                   @bind="Filter.Rooms" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-ruler-combined"></i>
-            <input type="number"
-                   placeholder="Size"
-                   @bind="Filter.Size" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-tag"></i>
-            <input type="text"
-                   placeholder="Rent/Sale"
-                   @bind="StatusInput" />
-        </div>
-
-        <div class="input-icon">
-            <i class="fa-solid fa-align-left"></i>
-            <input type="text"
-                   placeholder="Description"
-                   @bind="Filter.Description" />
-        </div>
-
-    </div>
-
-    <button class="filter-btn" @onclick="ApplyFilters">
-        Apply Filters
-    </button>
-
+                    <div class="room-number">
+                        <input type="checkbox" @onchange="e => RoomChanged(6, e)" />
+                        6+
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <RadzenSlider Range="true" @bind-Value="@rangeValues" Min="3000" Max="1000000" TValue="IEnumerable<double>" />
+                <p></p>
+            </section>
+        </EditForm>
+    </aside>
 </div>
 
 @code {
-    String? StatusInput;
-    private List<Property> properties = new();
+    double[] rangeValues = new double[] { 20.0, 80.0 };
+                List<double> rooms = new();
+               
 
-    private async Task ApplyFilters()
+void RoomChanged(double room, ChangeEventArgs e)
     {
-        Filter.Status = null;
+       bool checkedValue = (bool)e.Value!;
 
-        switch (StatusInput?.Trim().ToLowerInvariant())
-        {
-            case "rent":
-                Filter.Status = Status.Rent;
-                break;
-
-            case "sale":
-                Filter.Status = Status.Sale;
-                break;
-
-            case "bought":
-                Filter.Status = Status.Bought;
-                break;
-        }
-
-        properties = await propertyservice.FilterAsync(Filter);
-    }
+         if (checkedValue)
+            rooms.Add(room);
+          else
+             rooms.Remove(room);
+                    
+                }
+            
+    PropertyFilterDTO filterModel = new PropertyFilterDTO();
+    string status;
 
     protected override void OnInitialized()
     {
-        
-        properties = new();
+        double min = rangeValues[0];
+        double max = rangeValues[1];
     }
+
 }
+            

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Radzen;
 using RealEstateProj.Components;
 using RealEstateProj.Data;
 using RealEstateProj.Data.DTO;
@@ -28,9 +29,11 @@ namespace RealEstateProj
             builder.Services.AddScoped<IPropertyService, PropertyService>();
             builder.Services.AddScoped<IPropertyImageService, PropertyImageService>();
             builder.Services.AddScoped<IUserService,UserService>();
-            builder.Services.AddScoped<PropertyFilter>();
+            builder.Services.AddScoped<PropertyFilterDTO, PropertyFilterDTO>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddSyncfusionBlazor();
+            builder.Services.AddRadzenComponents();
+
 
 
             var app = builder.Build();

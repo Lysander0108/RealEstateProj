@@ -18,7 +18,7 @@ namespace RealEstateProj.Data.Interfaces
 
 
         // THE filter!!!!! 
-        public Task<List<Property>> FilterAsync(PropertyFilter propertyFilter);
+        public Task<List<Property>> FilterAsync(PropertyFilterDTO propertyFilter);
         
         // Filters
 
