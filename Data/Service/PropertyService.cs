@@ -74,15 +74,32 @@ namespace RealEstateProj.Data.Service
                 if (val == null || (val is ICollection c && c.Count == 0)) continue;
 
                 var entityProp = typeof(Property).GetProperty(prop.Name);
-                if (entityProp == null) continue; // FreeSearch, MinPrice, MaxPrice no match, handle below
+                if (entityProp == null) continue;
 
                 var param = Expression.Parameter(typeof(Property), "p");
                 var left = Expression.Property(param, entityProp);
-                var right = Expression.Constant(val);
-                var eq = Expression.Equal(left, right);
-                query = query.Where(Expression.Lambda<Func<Property, bool>>(eq, param));
-            }
 
+                Expression body;
+
+                if (val is IEnumerable list and not string)
+                {
+                    // val = list of value, entity prop = single value
+                    // build: list.Contains(p.Rooms)
+                    var listExpr = Expression.Constant(val);
+                    var containsMethod = typeof(Enumerable).GetMethods()
+                        .First(m => m.Name == "Contains" && m.GetParameters().Length == 2)
+                        .MakeGenericMethod(entityProp.PropertyType);
+
+                    body = Expression.Call(containsMethod, listExpr, left);
+                }
+                else
+                {
+                    var right = Expression.Constant(val);
+                    body = Expression.Equal(left, right);
+                }
+
+                query = query.Where(Expression.Lambda<Func<Property, bool>>(body, param));
+            }
             if (!string.IsNullOrWhiteSpace(f.FreeSearch))
                 query = query.Where(BuildFreeSearch<Property>(f.FreeSearch));
 
