@@ -7,6 +7,8 @@
 @using RealEstateProj.Data
 @using RealEstateProj.Data.DTO
 
+
+
 <div class="parent">
     <aside class="filter-bar">
         <header><h2> filter</h2></header>
@@ -85,7 +87,6 @@
             </section>
             <button class="btn btn-primary" type="submit" @onclick="SetFilter">clcik!</button>
         </EditForm>
-      
     </aside>
 </div>
 
@@ -122,10 +123,10 @@
              rooms.Remove(room); 
         }
 
-    public async Task SetFilter()
+    private async Task SetFilter()
     {
         filterModel.Rooms = rooms;
-        properties= await Propertyservice.FilterAsync(filterModel);
+        properties= await Propertyservice.FilterProperties(filterModel);
         filterModel.Rooms = new();
 
     }
