@@ -1,22 +1,147 @@
-﻿.parent{
+﻿.parent {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; 
+    min-height: 100vh;
 }
 
+/* Main filter container */
 .filter-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;      
-    justify-content: center;  
-    text-align: center;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+    padding: 32px;
 
     width: min(90%, 700px);
-    height: min(50%, 700px);   
-    max-height: 700px;         
+    min-height: 500px;
+    max-height: 700px;
 
-    border-radius: 24px;     
-    
-    background-color: pink;
+    color: #222;
+}
+
+/* Header */
+.filter-bar header {
+    border-bottom: 1px solid #222;
+    padding-bottom: 12px;
+    margin-bottom: 28px;
+}
+
+.filter-bar header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Each filter section */
+.filter-bar section {
+    margin-bottom: 26px;
+}
+
+.filter-bar section h6 {
+    margin-bottom: 10px;
+
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+
+    color: #555;
+}
+
+/* Inputs */
+.filter-bar input[type="text"],
+.filter-bar input[type="number"],
+.filter-bar select {
+    width: 100%;
+    height: 42px;
+
+    padding: 8px 12px;
+
+    background: #ffffff;
+    border: 1px solid #bdbdbd;
+    border-radius: 0;
+
+    color: #222;
+    font-size: 14px;
+
+    outline: none;
+}
+
+/* Input focus */
+.filter-bar input:focus,
+.filter-bar select:focus {
+    border-color: #222;
+    box-shadow: none;
+}
+
+/* Rooms */
+.rooms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Individual room boxes */
+.room-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 55px;
+    height: 40px;
+
+    border: 1px solid #bdbdbd;
+    background: #ffffff;
+
+    font-size: 14px;
+    color: #222;
+
+    gap: 7px;
+}
+
+/* Checkbox */
+.room-number input[type="checkbox"] {
+    accent-color: #222;
+}
+
+/* Price inputs */
+.filter-bar section:has(input[type="number"]) {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Button */
+.filter-bar button {
+    width: 100%;
+    height: 44px;
+
+    margin-top: 8px;
+
+    border: 1px solid #222;
+    border-radius: 0;
+
+    background: #222;
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+}
+
+/* Button hover */
+.filter-bar button:hover {
+    background: #fff;
+    color: #222;
+}
+
+/* Free filter */
+.filter-bar section:last-of-type input {
+    width: 100%;
 }
