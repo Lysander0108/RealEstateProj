@@ -25,30 +25,25 @@
     List<Property> properties = new();
     [Parameter] public string? Fillter { get; set; }
 
-    void FillterProperty()
+    async Task FillterPropertyAsync()
     {
-        switch (Fillter)
+        properties = Fillter switch
         {
-            case "Rent":
-                properties = propertyService.GetAllForRent();
-                break;
-            case "Sale":
-                properties = propertyService.GetAllForSale();
-                break;
-            default:
-           
-                break;
-        }
+            "Rent" => propertyService.GetAllForRent(),
+            "Sale" => propertyService.GetAllForSale(),
+            _ => await propertyService.GetAllPropertiesAsync()
+        };
     }
 
     protected override void OnParametersSet()
     {
-        FillterProperty();
+       FillterPropertyAsync();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        properties = await propertyService.GetAllPropertiesAsync();
+          properties =  await propertyService.GetAllPropertiesAsync();
     }
+
 }
 
